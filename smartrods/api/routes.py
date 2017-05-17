@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, abort, make_response, jsonify
 from flask_httpauth import HTTPBasicAuth
 from flask_restful import Api, Resource
 from smartrods.models import Board, Rods
@@ -15,7 +15,7 @@ def get_password(username):
 
 @auth.error_handler
 def unauthorized():
-    return {'error': 'Unauthorized access'}, 401
+    return make_response(jsonify({'error': 'Unauthorized access'}), 401)
 
 # @mod.route('/getstuff')
 # @auth.login_required
@@ -27,7 +27,7 @@ class BoardAPI(Resource):
     def get(self, id):
         board = Board.query.get(id)
         if board is None:
-            abort(404)
+            return {'error': 'There is no board with the requested ID'}, 404
         return {'id':board.id,
                 'is_connected':board.is_connected,
                 'user':board.user.firstname+' '+board.user.lastname,
@@ -46,3 +46,7 @@ class BoardAPI(Resource):
 
 
 api.add_resource(BoardAPI, '/boards/<int:id>', endpoint='board')
+
+@mod.errorhandler(404)
+def not_found(error):
+    return {'error': 'Not found'}, 404
