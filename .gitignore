@@ -1,0 +1,3 @@
+flask
+*.pyc
+.DS_Store
