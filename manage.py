@@ -3,11 +3,11 @@
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
-from smartrods import app, db
+from smartrods import application, db
 
-migrate = Migrate(app, db)
+migrate = Migrate(application, db)
 
-manager = Manager(app)
+manager = Manager(application)
 manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':

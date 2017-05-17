@@ -15,7 +15,7 @@ def get_password(username):
 
 @auth.error_handler
 def unauthorized():
-    return make_response(jsonify({'error': 'Unauthorized access'}), 401)
+    return {'error': 'Unauthorized access'}, 401
 
 # @mod.route('/getstuff')
 # @auth.login_required
