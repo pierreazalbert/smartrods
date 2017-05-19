@@ -1,3 +1,4 @@
+# Python files etc
 flask
 *.pyc
 .DS_Store
