@@ -1,7 +1,15 @@
-from flask import Blueprint
+from flask import Blueprint, render_template, make_response
 
 mod = Blueprint('site', __name__, template_folder='templates')
 
-@mod.route('/home')
+@mod.route('/')
 def home():
-    return '<h1>You are on the homepage!</h1>'
+    return render_template('home.html')
+
+@mod.route('/test')
+def test():
+    return render_template('test.html')
+
+@mod.route('/new-login')
+def new_login():
+    return render_template('login.html')

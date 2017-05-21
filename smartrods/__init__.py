@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_user import login_required, roles_required, UserManager, SQLAlchemyAdapter
+from flask_bootstrap import Bootstrap
 
 # Initialise basic Flask application
 application = Flask(__name__)
@@ -10,6 +11,7 @@ application.config.from_pyfile('config.py')
 # Initialise Flask extensions
 db = SQLAlchemy(application)        # Initialise Database
 mail = Mail(application)            # Initialise Flask-Mail
+bootstrap = Bootstrap(application)
 
 # Initialise Flask-User
 from models import User
