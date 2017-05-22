@@ -19,10 +19,6 @@
 </nav>
 {% endblock %}
 
-{% block content %}
-<h1> This is a test page. </h1>
-{% endblock %}
-
 {% block scripts %}
   <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.js')}}"></script>
