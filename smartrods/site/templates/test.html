@@ -1,8 +1,30 @@
-{% extends 'base.html' %}
+{% extends 'sitebase.html' %}
 
 {% block title %}SmartRods{% endblock %}
 
 {% block content %}
-  <h1>Hello, Bootstrap</h1>
-  <div class=login-rectangle> </div>
+<h1>Hello, Bootstrap</h1>
+
+<script>
+
+var username = 'smartrods'
+var password = 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1'
+
+$.ajax({
+         type: "GET",
+         url: "/api/boards/1",
+         data: '',
+         contentType: "application/json; charset=utf-8",
+         dataType: "json",
+         username: username,
+         password: password,
+         success: function (result) { console.log(result); },
+         error: function (error) { console.log(error); }
+     });
+
+
+
+  console.log('test');
+
+</script>
 {% endblock %}
