@@ -1,6 +1,9 @@
-{% extends 'sitebase.html' %}
+{% extends 'newbase.html' %}
 
-{% block title %}SmartRods{% endblock %}
+{% block title %}
+  {{ super() }}
+  Test
+{% endblock %}
 
 {% block content %}
 <h1>Hello, Bootstrap</h1>

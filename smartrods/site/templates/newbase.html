@@ -1,0 +1,29 @@
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+<link href="{{ url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}SmartRods - {% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        <img alt="Logo" src="{{ url_for('static', filename='img/logo.svg') }}" style="margin-top: -7px;">
+      </a>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1> This is a test page. </h1>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.js')}}"></script>
+{% endblock %}
