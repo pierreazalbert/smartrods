@@ -2,7 +2,7 @@ from flask import Blueprint, abort, make_response, jsonify, request
 from flask_httpauth import HTTPBasicAuth
 from flask_restful import Api, Resource
 from smartrods import db
-from smartrods.models import Board, Rods
+from smartrods.models import *
 
 mod = Blueprint('api', __name__)    # Initialise Blueprint for API
 auth = HTTPBasicAuth()              # Initialise API HTTP Authentication
@@ -17,11 +17,26 @@ def get_password(username):
 @auth.error_handler
 def unauthorized():
     return make_response(jsonify({'error': 'Unauthorized access'}), 401)
+    
+class ClassroomAPI(Resource):
 
-# @mod.route('/getstuff')
-# @auth.login_required
-# def getstuff():
-#     return '{"result":"You are in the API!"}'
+    decorators = [auth.login_required]
+
+    # Get list of all students in classroom + contents of their boards
+    def get(self, id):
+        classroom = Classroom.query.get(id)
+        if classroom is None:
+            return {'error': 'There is no classroom with the requested ID'}, 404
+        results = []
+        for user in classroom.users:
+            results.append({'id':user.board.id,
+                            'is_connected':user.board.is_connected,
+                            'user':user.firstname+' '+user.lastname,
+                            'last_update':str(user.board.rods[-1].timestamp),
+                            'rods':user.board.rods[-1].rods})
+        return make_response(jsonify(results), 200)
+
+api.add_resource(ClassroomAPI, '/classrooms/<int:id>', endpoint='classroom')
 
 class BoardAPI(Resource):
 
@@ -66,18 +81,6 @@ class BoardAPI(Resource):
         return {'timestamp':request.json['timestamp'],
                 'rods':request.json['rods'],
                 'board_id':id}, 201
-
-        #     if
-
-    # def post(self):
-    #     if not request.json or not 'id' in request.json or not 'rods' in request.json:
-    #         abort(400)
-    #     if
-    #
-    #     board = Board.query.get(id)
-    #     if board is None:
-    #         abort(404)
-    #     if
 
 
 api.add_resource(BoardAPI, '/boards/<int:id>', endpoint='board')
