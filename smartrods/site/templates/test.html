@@ -6,10 +6,10 @@
 {% endblock %}
 
 {% block content %}
-
 <div class='container'>
   <div class='row' id='title'>
     <h1>Multiple boards in grid</h1>
+    <br>
   </div>
   <div class='row' id='grid'>
   </div>
@@ -23,8 +23,8 @@
 
 <script>
 
-var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2').attr('style', 'background-color:pink').append($('<canvas>').attr('width', '400').attr('height', '400'),
-$('<h4>').attr('style', 'text-align:left'));
+var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2').attr('style', 'background-color:pink').append($('<canvas>').attr('width', '200').attr('height', '200'),
+$('<h4>').attr('class', 'board-username').attr('style', 'text-align:left'));
 
 var colours = [
     "#E1E1E1", // 0 - empty
@@ -40,15 +40,15 @@ var colours = [
     "#F6A623" // 10 - orange
   ];
 
-var temp = '';
+var temp = null;
 
-function drawBoard(canvas, id, rods) {
+function drawBoard(canvas, id, data) {
 
   var canvasSize = canvas.width;
   var boardSize = canvasSize * 0.9;
 
   $(canvas).drawRect({
-    layer: true,
+    layer: false,
     name: String('board_' + id),
     x: canvasSize / 2,
     y: canvasSize / 2,
@@ -58,6 +58,10 @@ function drawBoard(canvas, id, rods) {
     fillStyle: "#E2E2E2",
     fromCenter: true
   });
+
+  // Parse input data
+  var input =  data.replace(/{/g, "[").replace(/}/g, "]");
+  var rods = JSON.parse("[" + input + "]")[0];
 
   for (var row in rods) {
    var column = 0;
@@ -72,7 +76,7 @@ function drawBoard(canvas, id, rods) {
        //console.log("adding rod " + value + " to board " + id);
        // Draw rod
        $(canvas).drawRect({
-         layer: true,
+         layer: false,
          name: String("rod_" + value),
          //groups: ["rods"],
          x: canvasSize * 0.05 + boardSize / 10 * column,
@@ -90,10 +94,9 @@ function drawBoard(canvas, id, rods) {
    }
  }
 
-
 }
 
-function pollBoard() {
+function pollBoards() {
   $.ajax({
            type: "GET",
            url: "/api/classrooms/{{current_user.classroom_id}}",
@@ -102,52 +105,90 @@ function pollBoard() {
            dataType: "json",
            username: 'smartrods',
            password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
-           success: function (result) { console.log(result); },
+           success: function (result) {
+             //console.log(result);
+           },
            error: function (error) { console.log(error); }
   })
     .done(function(data) {
-      temp = data;
-      $('#grid').empty();
-      for (i in data) {
 
-        var board = $(boardDiv).clone();
-        var canvas = $(board).find('canvas');
+      // The first time we poll we create everything
+      if (temp === null) {
+        for (i in data) {
+          createBoard(data[i]);
+        }
+      }
+      // Otherwise, check if something has changed
+      else {
+        // Check if some of the boards have changed
+        for (i in data) {
 
-        canvas.attr('id', String('board_' + data[i].id));
-        canvas.attr('width', canvas.parent().width());
-        canvas.attr('height', canvas.parent().width());
+          // Check if board exists in previous data received
+          var last = temp.filter(function (board) {
+            return (board.id === data[i].id);
+          });
 
-        $(board).find('h4').text(data[i].user);
-
-        var input =  data[i].rods.replace(/{/g, "[").replace(/}/g, "]");
-        var rods = JSON.parse("[" + input + "]")[0];
-
-        drawBoard($(board).find('canvas')[0], data[i].id, rods);
-
-        $('#grid').append(board);
+          if (last === null) {
+            createBoard(data[i]);
+          }
+          else if (data[i].rods != last[0].rods) {
+            updateBoard(data[i]);
+          }
+          else {
+            console.log('no boards to update');
+          }
+      }
       };
+
+      temp = data;
+      respondCanvas();
+
     })
     .always(function() {
-      setTimeout(pollBoard, 5000);
+      setTimeout(pollBoards, 5000);
     });
 }
 
-function respondCanvas() {
-  var canvases = $('canvas');
-  for (i in canvases) {
-    var canvas = canvases[i];
-    var container = $(canvas).parent();
-    var size = $(container).width();
-    $(canvas).attr('width', size);
-    $(canvas).attr('height', size);
-    drawBoard(canvas, temp[i].id, temp[i].rods);
+function createBoard(data) {
+  console.log('creating new tile for board ' + data.id);
+  // Create new div
+  var board = $(boardDiv).clone();
+  var canvas = $(board).find('canvas');
+  // Give div the id of the board and insert user name
+  canvas.attr('id', String('board_' + data.id));
+  $(board).find('h4').text(data.user);
+  // Draw board
+  drawBoard(canvas[0], data.id, data.rods);
+  // Add div to page
+  $('#grid').append(board);
+}
 
-  }
+function updateBoard(data) {
+  console.log('updating contents of board ', data.id);
+
+  // Draw board
+  var canvas = $(String('board_' + data.id));
+  drawBoard(canvas, data.id, data.rods);
+}
+
+function respondCanvas() {
+  $('canvas').each( function () {
+    var container = $(this).parent();
+    var size = $(container).width();
+    var id = parseInt($(this).attr('id').split('_').pop(), 10);
+    var data = temp.filter(function (board) {
+      return (board.id === id);
+    });
+    $(this).attr('width', size);
+    $(this).attr('height', size);
+    drawBoard(this, id, data[0].rods);
+  });
+
 }
 
 $(document).ready(function() {
 
-  pollBoard();
+  pollBoards();
 
   $(window).resize(respondCanvas);
 
