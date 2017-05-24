@@ -179,8 +179,8 @@ function respondCanvas() {
     var data = temp.filter(function (board) {
       return (board.id === id);
     });
-    $(this).attr('width', size);
-    $(this).attr('height', size);
+    $(this).attr('width', size*2);
+    $(this).attr('height', size*2);
     drawBoard(this, id, data[0].rods);
   });
 
