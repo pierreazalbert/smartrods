@@ -17,10 +17,12 @@ def home():
 def test():
     return render_template('test.html')
 
-@mod.route('/dashboard')
+@mod.route('/classroom')
+@login_required
 def classroom():
-    return render_template('dashboard.html')
+    return render_template('classroom.html')
 
 @mod.route('/exercises')
+@login_required
 def exercises():
     return render_template('exercises.html')

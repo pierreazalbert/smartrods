@@ -2,15 +2,12 @@
 
 {% block title %}
   {{ super() }}
-  Test
+  Classroom
 {% endblock %}
 
-{% block content %}
+{% block main %}
 <div class='container'>
-  <div class='row' id='title'>
-    <h1>Multiple boards in grid</h1>
-    <br>
-  </div>
+  <h1>Board overview</h1><br>
   <div class='row' id='grid'>
   </div>
 </div>
@@ -23,7 +20,7 @@
 
 <script>
 
-var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2').attr('style', 'background-color:pink').append($('<canvas>').attr('width', '200').attr('height', '200'),
+var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2').append($('<canvas>').attr('width', '200').attr('height', '200'),
 $('<h4>').attr('class', 'board-username').attr('style', 'text-align:left'));
 
 var colours = [

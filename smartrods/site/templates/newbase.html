@@ -20,30 +20,31 @@
         <span class="icon-bar"></span>
       </button>
    <a class="navbar-brand" href="{{ url_for('site.home') }}">
-		<img alt="Brand" src="{{ url_for('static', filename='img/logo-text.svg') }}" height=75% style='margin-top:-1px; padding-right:10px'>
+		<img alt="Brand" src="{{ url_for('static', filename='img/logo-text.svg') }}" height=75% style='margin-top:-1px;'>
 		</a>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse" id="navbar">
    <ul class="nav navbar-nav">
-    <li class="active"><a href="#">Classroom<span class="sr-only">(current)</span></a></li>
-    <li><a href="#">Exercises</a></li>
+    <li ><a id="site-classroom" href="{{ url_for('site.classroom') }}">Classroom</a></li>
+    <li ><a id="site-exercises" href="{{ url_for('site.exercises') }}">Exercises</a></li>
    </ul>
    <ul class="nav navbar-nav navbar-right">
 		 {% if current_user.is_authenticated %}
     <li class="dropdown">
      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.username|title}} <span class="caret"></span></a>
      <ul class="dropdown-menu">
-      <li><a href="{{ url_for('user.profile', username=current_user.username) }}">Profile</a></li>
+      <li><a id="user-profile" href="{{ url_for('user.profile', username=current_user.username) }}">Profile</a></li>
       <li role="separator" class="divider"></li>
-      <li><a href="{{ url_for('user.logout') }}">Log Out</a></li>
+      <li><a id="user-logout" href="{{ url_for('user.logout') }}">Log Out</a></li>
+    </ul>
+   </li>
 			{% else %}
-			<li><a href="{{ url_for('user.login') }}">Log In</a></li>
+			<li><a id="user-login" href="{{ url_for('user.login') }}">Log In</a></li>
 			{% endif %}
-     </ul>
-    </li>
-    <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
+
+    <li><a id="site-settings" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
    </ul>
   </div>
   <!-- /.navbar-collapse -->
@@ -52,7 +53,38 @@
 </nav>
 {% endblock %}
 
+{% block content %}
+
+  <div class="container">
+  {% block flash_messages %}
+      {%- with messages = get_flashed_messages(with_categories=true) -%}
+          {% if messages %}
+              {% for category, message in messages %}
+                  {% if category=='error' %}
+                      {% set category='danger' %}
+                  {% endif %}
+                  <div class="alert alert-{{category}}">{{ message|safe }}</div>
+              {% endfor %}
+          {% endif %}
+      {%- endwith %}
+  {% endblock %}
+  </div>
+
+  {% block main %}
+  {% endblock %}
+
+{% endblock %}
+
 {% block scripts %}
 	<script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js')}}"></script>
 	<script src="{{ url_for('static', filename='js/bootstrap.js')}}"></script>
+  <script>
+    $(document).ready(function () {
+    var active = String("#{{request.endpoint}}").replace('.', '-');
+    console.log(active);
+    $(active).parent().addClass('active');
+    console.log($(active));
+
+  });
+  </script>
 {% endblock %}
