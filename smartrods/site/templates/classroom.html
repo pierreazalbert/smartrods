@@ -20,8 +20,13 @@
 
 <script>
 
-var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').append($('<canvas>').attr('width', '200').attr('height', '200').attr('class', 'blur'),
-$('<span>').attr('class', 'board-username').attr('style', 'text-align:left'));
+var enlargeButton = $('<button>').attr('class', 'btn').text('Enlarge');
+var infoButton = $('<button>').attr('class', 'btn').attr('style', 'top:50%').text('More info');
+var overlayDiv = $('<div>').attr('class', 'overlay').append(enlargeButton, infoButton);
+
+var canvasDiv = $('<canvas>').attr('width', '200').attr('height', '200').attr('class', 'blur');
+var nameDiv = $('<span>').attr('class', 'board-username').attr('style', 'text-align:left');
+var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').append(canvasDiv, nameDiv, overlayDiv);
 
 var colours = [
     "#E1E1E1", // 0 - empty
@@ -161,6 +166,17 @@ function createBoard(data) {
   drawBoard(canvas[0], data.id, data.rods);
   // Add div to page
   $('#grid').append(board);
+
+  // $(canvas).mouseenter( function(){
+  //   console.log('entering ', $(canvas).attr('id'));
+  //   var overlay = $(overlayDiv).clone();
+  //   $(canvas).parent().append(overlay);
+  // });
+  //
+  // $(canvas).mouseleave( function(){
+  //   console.log('leaving ', $(canvas).attr('id'));
+  //   $(canvas).parent().find('.overlay').remove();
+  // });
 }
 
 function updateBoard(data) {
@@ -182,22 +198,7 @@ function respondCanvas() {
     $(this).attr('width', size*2);
     $(this).attr('height', size*2);
     drawBoard(this, id, data[0].rods);
-
-    // $(this).mouseenter( function(){
-    //   console.log('entering ', $(this).attr('id'));
-    //   // $(container).append($('<div>').attr('class', 'blur'));
-    //   // $(this).addClass('blur-2');
-    // });
-    //
-    // $(this).mouseout( function(){
-    //   console.log('leaving ', $(this).attr('id'));
-    //   // $(".blur").remove();
-    //   // $(this).removeClass('blur-2');
-    // });
-
   });
-
-
 
 }
 
@@ -207,6 +208,14 @@ $(document).ready(function() {
 
   $(window).resize(respondCanvas);
 
+  $('.tile').on("tap", function(e){
+    if ($(this).hasClass('hover')) {
+      $(this).removeClass('hover');
+    }
+    else {
+      $(this).addClass('hover');
+    }
+  });
 
 
 });
