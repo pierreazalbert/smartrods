@@ -23,6 +23,6 @@ from smartrods.api.routes import mod
 from smartrods.site.views import mod
 from smartrods.admin.views import mod
 
-application.register_blueprint(api.routes.mod, url_prefix='/api')
 application.register_blueprint(site.views.mod)
+application.register_blueprint(api.routes.mod, url_prefix='/api')
 application.register_blueprint(admin.views.mod, url_prefix='/admin')
