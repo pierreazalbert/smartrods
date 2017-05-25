@@ -26,7 +26,7 @@ var overlayDiv = $('<div>').attr('class', 'overlay').append(enlargeButton, infoB
 
 var canvasDiv = $('<canvas>').attr('width', '200').attr('height', '200').attr('class', 'blur');
 var nameDiv = $('<span>').attr('class', 'board-username').attr('style', 'text-align:left');
-var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').append(canvasDiv, nameDiv, overlayDiv);
+var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').attr('onclick', '""').append(canvasDiv, nameDiv, overlayDiv);
 
 var colours = [
     "#E1E1E1", // 0 - empty
@@ -208,14 +208,14 @@ $(document).ready(function() {
 
   $(window).resize(respondCanvas);
 
-  $('.tile').on("tap", function(e){
-    if ($(this).hasClass('hover')) {
-      $(this).removeClass('hover');
-    }
-    else {
-      $(this).addClass('hover');
-    }
-  });
+  // $('.tile').on("tap", function(e){
+  //   if ($(this).hasClass('hover')) {
+  //     $(this).removeClass('hover');
+  //   }
+  //   else {
+  //     $(this).addClass('hover');
+  //   }
+  // });
 
 
 });
