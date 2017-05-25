@@ -2,6 +2,22 @@
   background-color: #F6F6F6;
 }*/
 
+@font-face {
+  font-family: Europa-Light;
+  src: url('Europa-Light.otf') format('otf');
+}
+
+@font-face {
+  font-family: Europa-Regular;
+  src: url('Europa-Regular.otf') format('otf');
+}
+
+@font-face {
+  font-family: Europa-Bold;
+  src: url('Europa-Bold.otf') format('otf');
+}
+
+
 canvas {
   max-width: 100%;
   display: block;
@@ -11,7 +27,7 @@ canvas {
 
 .board-username {
   padding-left: 5%;
-  font-family: 'Europa-Bold';
+  font-family: Europa-Regular;
 }
 
 #flask-user {
@@ -21,7 +37,7 @@ canvas {
   padding-left: 50px;
   padding-right: 50px;
   padding-top: 30px;
-  font-family: 'Europa-Bold';
+  font-family: Europa-Regular;
   margin-left: 10%;
   margin-right: 10%;
   margin-top: 10%;
@@ -30,7 +46,7 @@ canvas {
 .btn {
   background-color: white;
   color: #4A4A4A;
-  font-family: 'Europa-Bold';
+  font-family: Europa-Bold;
   font-size: 80%;
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -53,11 +69,11 @@ canvas {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Europa-Bold';
+    font-family: Europa-Bold;
 }
 
 .navbar {
-  font-family: 'Europa-Bold';
+  font-family: Europa-Bold;
   font-size: 80%;
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -66,14 +82,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .dropdown-menu {
-  font-family: 'Europa-Bold';
-  font-size: 80%;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-}
-
-.dropdown-menu > li .active > a {
-  color: red;
+  font-family: Europa-Regular;
+  letter-spacing: 0px;
+  text-transform: capitalize;
 }
 
 @media (min-width: 768px) {
@@ -110,5 +121,5 @@ h1, h2, h3, h4, h5, h6 {
 .alert {
   border: none;
   border-radius: 0;
-  font-family: 'Europa-Bold';
+  font-family: Europa-Regular;
 }
