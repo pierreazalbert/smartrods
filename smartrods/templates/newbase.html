@@ -80,8 +80,13 @@
 {% endblock %}
 
 {% block scripts %}
+  // Tyepekit
+  <script src="https://use.typekit.net/rmp5vih.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+  // Bootstrap and jQuery
 	<script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js')}}"></script>
 	<script src="{{ url_for('static', filename='js/bootstrap.js')}}"></script>
+  // Custom script applied to all pages
   <script>
     $(document).ready(function () {
 
