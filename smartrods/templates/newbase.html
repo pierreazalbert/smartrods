@@ -13,15 +13,17 @@
  <div class="container-fluid">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
-   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+   <button id='menu-button' type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-   <a class="navbar-brand" href="{{ url_for('site.home') }}">
-		<img alt="Brand" src="{{ url_for('static', filename='img/logo-text.svg') }}" height=75% style='margin-top:-1px;'>
-		</a>
+      <div id='brand-logo'>
+          <a class="navbar-brand"  href="{{ url_for('site.home') }}">
+		      <img alt="Brand"  src="{{ url_for('static', filename='img/logo-text.png') }}" height=80%></img>
+		      </a>
+        </div>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
@@ -80,13 +82,11 @@
 {% endblock %}
 
 {% block scripts %}
-  // Tyepekit
   <script src="https://use.typekit.net/rmp5vih.js"></script>
   <script>try{Typekit.load({ async: true });}catch(e){}</script>
-  // Bootstrap and jQuery
-	<script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js')}}"></script>
-	<script src="{{ url_for('static', filename='js/bootstrap.js')}}"></script>
-  // Custom script applied to all pages
+	<script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/stackblur.min.js') }}"></script>
   <script>
     $(document).ready(function () {
 

@@ -9,6 +9,11 @@ canvas {
   padding-bottom: 2%;
 }
 
+.blur:hover {
+  -webkit-filter: blur(10px);
+  filter: blur(10px);
+}
+
 .board-username {
   padding-left: 5%;
   font-family: "europa";
@@ -83,6 +88,13 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: capitalize;
 }
 
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+    background-color: white !important;
+    font-weight: 700;
+    border-left: 2px solid #4A4A4A;
+    color: #4A4A4A;
+}
+
 @media (min-width: 768px) {
   .navbar .navbar-nav {
     display: inline-block;
@@ -121,3 +133,60 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   font-style: normal;
 }
+
+.brand-name {
+  font-family: "europa";
+  font-weight: 700;
+  font-style: normal;
+  font-size: 65%;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding-left: 5px;
+}
+
+.navbar-brand {
+  margin-top: -2px;
+  padding-left: 20px;
+
+}
+
+#menu-button {
+  border:none;
+}
+
+.icon-bar {
+  background-color: black;
+}
+
+.navbar-toggle .icon-bar {
+  background-color: ##eee !important;
+  border-radius: 0px;
+}
+
+.navbar-toggle:hover .icon-bar {
+  background-color: #555 !important;
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+  background-color: #F6F6F6;
+}
+
+/*.blur {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index:100000;
+    background-color: pink;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    margin-left: 6%;
+    margin-right: 6%;
+    margin-top: 5%;
+    margin-bottom: 10%;
+    border-radius: 3%;
+}*/

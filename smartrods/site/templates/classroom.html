@@ -20,7 +20,7 @@
 
 <script>
 
-var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2').append($('<canvas>').attr('width', '200').attr('height', '200'),
+var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').append($('<canvas>').attr('width', '200').attr('height', '200').attr('class', 'blur'),
 $('<span>').attr('class', 'board-username').attr('style', 'text-align:left'));
 
 var colours = [
@@ -53,7 +53,10 @@ function drawBoard(canvas, id, data) {
     width: boardSize * 1.1,
     cornerRadius: boardSize / 25,
     fillStyle: "#E2E2E2",
-    fromCenter: true
+    fromCenter: true,
+    mouseover: function(layer) {
+      console.log('clicked!');
+    }
   });
 
   // Parse input data
@@ -179,7 +182,22 @@ function respondCanvas() {
     $(this).attr('width', size*2);
     $(this).attr('height', size*2);
     drawBoard(this, id, data[0].rods);
+
+    // $(this).mouseenter( function(){
+    //   console.log('entering ', $(this).attr('id'));
+    //   // $(container).append($('<div>').attr('class', 'blur'));
+    //   // $(this).addClass('blur-2');
+    // });
+    //
+    // $(this).mouseout( function(){
+    //   console.log('leaving ', $(this).attr('id'));
+    //   // $(".blur").remove();
+    //   // $(this).removeClass('blur-2');
+    // });
+
   });
+
+
 
 }
 
@@ -188,6 +206,8 @@ $(document).ready(function() {
   pollBoards();
 
   $(window).resize(respondCanvas);
+
+
 
 });
 
