@@ -6,10 +6,12 @@ canvas {
   max-width: 100%;
   display: block;
   padding-top: 5%;
+  padding-bottom: 2%;
 }
 
 .board-username {
   padding-left: 5%;
+  font-family: 'Europa-Bold';
 }
 
 #flask-user {
@@ -65,8 +67,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .dropdown-menu {
   font-family: 'Europa-Bold';
-  letter-spacing: 0px;
-  text-transform: capitalize;
+  font-size: 80%;
+  letter-spacing: 4px;
+  text-transform: uppercase;
 }
 
 .dropdown-menu > li .active > a {
@@ -102,4 +105,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
     background-color: #E7E7E7;
+}
+
+.alert {
+  border: none;
+  border-radius: 0;
+  font-family: 'Europa-Bold';
 }
