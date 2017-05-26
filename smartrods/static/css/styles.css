@@ -9,10 +9,27 @@ canvas {
   padding-bottom: 2%;
 }
 
-/*.blur:hover, .blur:focus, .blur:active {
-  -webkit-filter: blur(10px);
-  filter: blur(10px);
-}*/
+.modal-canvas {
+  max-width: 80%;
+  display: block;
+}
+
+.modal-info {
+  font-family: "europa";
+  font-weight: 400;
+  font-style: normal;
+  color: #9B9B9B;
+  font-size: 90%;
+}
+
+.modal-button {
+  background-color: #E1E1E1 !important;
+  color: #4A4A4A;
+}
+
+.modal-button:hover {
+  background-color: #4A4A4A !important;
+}
 
 .board-username {
   padding-left: 5%;
@@ -52,6 +69,7 @@ canvas {
 .btn:hover {
   background-color: #4A4A4A;
   color: white;
+  transition: opacity .5s ease;
 }
 
 .form-control {
@@ -187,6 +205,7 @@ transition: background 0.5s ease;
   display: block;
   -webkit-filter: blur(10px);
   filter: blur(10px);
+  transition: opacity .5s ease;
 }
 
 .overlay > button {
@@ -198,10 +217,15 @@ transition: background 0.5s ease;
   transform: translate(-50%,-50%);
   text-align: center;
   opacity: 0;
-  transition: opacity .35s ease;
+  transition: opacity .5s ease;
   font-size: 80%
 }
 
 .tile:hover button {
   opacity: 1;
+}
+
+.modal-header > .row {
+  display: flex;
+    align-items: center;
 }

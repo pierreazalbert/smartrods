@@ -6,11 +6,44 @@
 {% endblock %}
 
 {% block main %}
+<!-- EMPTY BOARD GRID -->
 <div class='container'>
   <h1>Board overview</h1><br>
   <div class='row' id='grid'>
   </div>
 </div>
+
+<!-- BOARD INFO MODAL -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <div class="row">
+            <div class="col-xs-6">
+              <canvas width="200" height="200" class="modal-canvas pull-right"></canvas>
+            </div>
+            <div class="col-xs-6">
+              <h4 class="modal-title" id="info-user" style="padding-bottom:10px;"></h4>
+              <h4 class="modal-info" id="info-id"></h4>
+              <h4 class="modal-info" id="info-connected"></h4>
+              <h4 class="modal-info" id="info-battery"></h4>
+              <button type="button" class="btn btn-default modal-button">Settings</button>
+            </div>
+          </div>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOARD ENLARGE MODAL -->
+
+
 {% endblock %}
 
 {% block scripts %}
@@ -20,11 +53,11 @@
 
 <script>
 
-var enlargeButton = $('<button>').attr('class', 'btn').text('Enlarge');
-var infoButton = $('<button>').attr('class', 'btn').attr('style', 'top:50%').text('More info');
+var enlargeButton = $('<button>').attr('class', 'btn').attr('data-toggle', 'modal').attr('data-target', '#enlargeModal').text('Enlarge');
+var infoButton = $('<button>').attr('class', 'btn').attr('style', 'top:50%').attr('data-toggle', 'modal').attr('data-target', '#infoModal').text('More info');
 var overlayDiv = $('<div>').attr('class', 'overlay').append(enlargeButton, infoButton);
 
-var canvasDiv = $('<canvas>').attr('width', '200').attr('height', '200').attr('class', 'blur');
+var canvasDiv = $('<canvas>').attr('width', '200').attr('height', '200');
 var nameDiv = $('<span>').attr('class', 'board-username').attr('style', 'text-align:left');
 var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').attr('onclick', '""').append(canvasDiv, nameDiv, overlayDiv);
 
@@ -70,7 +103,7 @@ function drawBoard(canvas, id, data) {
 
   for (var row in rods) {
    var column = 0;
-   while (column < 9) {
+   while (column < 10) {
      //console.log('column ' + column);
      var value = parseInt(rods[row][column], 10);
      //console.log('cell value: ' + value);
@@ -185,13 +218,17 @@ function updateBoard(data) {
   // Draw board
   var canvas = $(String('board_' + data.id));
   drawBoard(canvas, data.id, data.rods);
+
+  // In case board is open in modal, update as well
+  var modalCanvas = $(String('board_' + data.id + '_info'));
+  drawBoard(modalCanvas, data.id, data.rods);
 }
 
 function respondCanvas() {
-  $('canvas').each( function () {
+  $('canvas[id]').each( function () {
     var container = $(this).parent();
     var size = $(container).width();
-    var id = parseInt($(this).attr('id').split('_').pop(), 10);
+    var id = parseInt($(this).attr('id').split('_')[1], 10);
     var data = temp.filter(function (board) {
       return (board.id === id);
     });
@@ -207,6 +244,37 @@ $(document).ready(function() {
   pollBoards();
 
   $(window).resize(respondCanvas);
+
+  $('#infoModal').on('show.bs.modal', function (event) {
+
+    // Get parent board info
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var container = button.parent().parent();
+    var board = container.find('canvas');
+    var id = parseInt(board.attr('id').split('_').pop(), 10);
+    var data = temp.filter(function (board) {
+      return (board.id === id);
+    });
+
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+    var modal = $(this);
+    modal.find('#info-user').text(data[0].user);
+    modal.find('#info-id').text('Board ID: ' + data[0].id);
+    modal.find('#info-connected').text('Connected: ' + 'N/A');
+    modal.find('#info-battery').text('Battery level: ' + 'N/A');
+
+    var canvas = modal.find('canvas');
+    canvas.attr('id', String('board_' + id + '_info'));
+
+    var size = container.width();
+    $(canvas).attr('width', size*2);
+    $(canvas).attr('height', size*2);
+
+    drawBoard(canvas[0], id, data[0].rods);
+
+  });
 
   // $('.tile').on("tap", function(e){
   //   if ($(this).hasClass('hover')) {
