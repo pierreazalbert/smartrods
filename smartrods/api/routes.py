@@ -17,7 +17,7 @@ def get_password(username):
 @auth.error_handler
 def unauthorized():
     return make_response(jsonify({'error': 'Unauthorized access'}), 401)
-    
+
 class ClassroomAPI(Resource):
 
     decorators = [auth.login_required]
@@ -43,6 +43,7 @@ class BoardAPI(Resource):
     decorators = [auth.login_required]
 
     # Get information about a specific board
+    # Returns only first 200 rods objects
     def get(self, id):
         board = Board.query.get(id)
         if board is None:
@@ -51,7 +52,8 @@ class BoardAPI(Resource):
                 'is_connected':board.is_connected,
                 'user':board.user.firstname+' '+board.user.lastname,
                 'last_update':str(board.rods[-1].timestamp),
-                'rods':board.rods[-1].rods}, 200
+                #'rods':board.rods[-1].rods}, 200
+                'rods': [board.rods[i].rods for i in range(len(board.rods))][:200]}, 200;
 
     # Update rods on board
     def post(self, id):

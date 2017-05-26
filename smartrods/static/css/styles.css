@@ -16,10 +16,10 @@ canvas {
 
 .modal-info {
   font-family: "europa";
-  font-weight: 400;
+  font-weight: 500;
   font-style: normal;
   color: #9B9B9B;
-  font-size: 90%;
+  font-size: 15px;
 }
 
 .modal-button {
@@ -227,5 +227,92 @@ transition: background 0.5s ease;
 
 .modal-header > .row {
   display: flex;
-    align-items: center;
+  align-items: center;
+}
+
+.modal-header {
+  border: none !important;
+}
+
+.modal-footer {
+  border: none !important;
+}
+
+.nav-tabs a,
+.nav-tabs a:hover,
+.nav-tabs a:focus {
+  border: none !important;
+  outline: none !important;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
+  border: none !important;
+  outline: none !important;
+}
+.nav-tabs > li > a {
+  border: none;
+  color: #9B9B9B;
+  font-family: "europa";
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li > a:hover {
+  border: none;
+  color: #4A4A4A !important;
+  background: transparent;
+}
+.nav-tabs > li > a::after {
+  content: "";
+  background: #4A4A4A;
+  height: 2px;
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  bottom: 1px;
+  transition: all 250ms ease 0s;
+  transform: scale(0);
+}
+.nav-tabs > li.active > a::after,
+.nav-tabs > li:hover > a::after {
+  transform: scale(1);
+}
+
+thead {
+  font-family: "europa";
+  font-weight: 700;
+  font-style: normal;
+}
+
+.info-stats {
+  padding-top: 2%;
+}
+
+.stats-title {
+  font-family: "europa";
+  font-weight: 700;
+  font-style: normal;
+  font-size: 130%;
+  margin-top: 10px;
+}
+
+.modal-open .container-fluid,
+.modal-open .container {
+    -webkit-filter: blur(10px);
+    filter: blur(10px);
+}
+
+.modal-content  {
+    border: 0px !important;
+    border-color: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0);
+}
+
+.modal-backdrop {
+    background-color: #B9B9B9;
 }

@@ -17,6 +17,11 @@ def home():
 def test():
     return render_template('test.html')
 
+@mod.route('/js/<filename>')
+@login_required
+def script(filename):
+    return render_template('./js/'+filename)
+
 @mod.route('/classroom')
 @login_required
 def classroom():

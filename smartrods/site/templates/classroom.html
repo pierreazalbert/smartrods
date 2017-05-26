@@ -32,10 +32,77 @@
           </div>
       </div>
       <div class="modal-body">
-
+        <ul class="nav nav-tabs nav-justified">
+          <li class="active"><a data-toggle="tab" href="#statistics">Statistics</a></li>
+          <li><a data-toggle="tab" href="#activity">Activity log</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="statistics" class="tab-pane fade in active" style="padding-top:7%">
+            <div class="row">
+              <div class="col-xs-6 info-stats stats-title">
+                    <div class="pull-right" style="margin-top:-3px">
+                      Progression
+                      <span class="glyphicon glyphicon-info-sign" style="color:#B9B9B9; font-size:80%" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="left" title="Progression" data-content="Progression is defined as ... write definition here!" ></span>
+                    </div>
+              </div>
+              <div class="col-xs-6 info-stats">
+                <h4>N/A %</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 info-stats stats-title">
+                    <div class="pull-right" style="margin-top:-3px">
+                      Accuracy
+                      <span class="glyphicon glyphicon-info-sign" style="color:#B9B9B9; font-size:80%" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="left" title="Accuracy" data-content="Accuracy is defined as ... write definition here!" ></span>
+                    </div>
+              </div>
+              <div class="col-xs-6 info-stats">
+                <h4>N/A %</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 info-stats stats-title">
+                    <div class="pull-right" style="margin-top:-3px">
+                      Speed
+                      <span class="glyphicon glyphicon-info-sign" style="color:#B9B9B9; font-size:80%" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="left" title="Speed" data-content="Speed is defined as ... write definition here!" ></span>
+                    </div>
+              </div>
+              <div class="col-xs-6 info-stats">
+                <h4>N/A %</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 info-stats stats-title">
+                    <div class="pull-right" style="margin-top:-3px">
+                      Systematicity
+                      <span class="glyphicon glyphicon-info-sign" style="color:#B9B9B9; font-size:80%" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="left" title="Systematicity" data-content="Systematicity is defined as ... write definition here!" ></span>
+                    </div>
+              </div>
+              <div class="col-xs-6 info-stats">
+                <h4>N/A %</h4>
+              </div>
+            </div>
+          </div>
+          <div id="activity" class="tab-pane fade" style="padding-top:2%">
+            <br>
+            <div class="table-responsive">
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Action</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default modal-button" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -48,246 +115,6 @@
 
 {% block scripts %}
 {{ super() }}
-
+<script src="{{ url_for('site.script', filename='classroom.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jcanvas.min.js') }}"></script>
-
-<script>
-
-var enlargeButton = $('<button>').attr('class', 'btn').attr('data-toggle', 'modal').attr('data-target', '#enlargeModal').text('Enlarge');
-var infoButton = $('<button>').attr('class', 'btn').attr('style', 'top:50%').attr('data-toggle', 'modal').attr('data-target', '#infoModal').text('More info');
-var overlayDiv = $('<div>').attr('class', 'overlay').append(enlargeButton, infoButton);
-
-var canvasDiv = $('<canvas>').attr('width', '200').attr('height', '200');
-var nameDiv = $('<span>').attr('class', 'board-username').attr('style', 'text-align:left');
-var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').attr('onclick', '""').append(canvasDiv, nameDiv, overlayDiv);
-
-var colours = [
-    "#E1E1E1", // 0 - empty
-    "#FFFFFF", // 1 - white
-    "#D0011B", // 2 - red
-    "#7ED321", // 3 - light green
-    "#BD0FE1", // 4 - purple
-    "#F7E500", // 5 - yellow
-    "#417505", // 6 - dark green
-    "#4A4A4A", // 7 - black
-    "#8B572A", // 8 - brown
-    "#4990E2", // 9 - blue
-    "#F6A623" // 10 - orange
-  ];
-
-var temp = null;
-
-function drawBoard(canvas, id, data) {
-
-  var canvasSize = canvas.width;
-  var boardSize = canvasSize * 0.9;
-
-  $(canvas).drawRect({
-    layer: false,
-    name: String('board_' + id),
-    x: canvasSize / 2,
-    y: canvasSize / 2,
-    height: boardSize * 1.1,
-    width: boardSize * 1.1,
-    cornerRadius: boardSize / 25,
-    fillStyle: "#E2E2E2",
-    fromCenter: true,
-    mouseover: function(layer) {
-      console.log('clicked!');
-    }
-  });
-
-  // Parse input data
-  var input =  data.replace(/{/g, "[").replace(/}/g, "]");
-  var rods = JSON.parse("[" + input + "]")[0];
-
-  for (var row in rods) {
-   var column = 0;
-   while (column < 10) {
-     //console.log('column ' + column);
-     var value = parseInt(rods[row][column], 10);
-     //console.log('cell value: ' + value);
-     if (value === 0) {
-       column = column + 1;
-       //console.log('empty cell');
-     } else {
-       //console.log("adding rod " + value + " to board " + id);
-       // Draw rod
-       $(canvas).drawRect({
-         layer: false,
-         name: String("rod_" + value),
-         //groups: ["rods"],
-         x: canvasSize * 0.05 + boardSize / 10 * column,
-         y: canvasSize * 0.05 + boardSize / 10 * row,
-         height: boardSize / 10,
-         width: boardSize * value / 10,
-         fillStyle: $(colours)[value],
-         strokeStyle: "#E1E1E1",
-         strokeWidth: boardSize / 100,
-         cornerRadius: boardSize / 50,
-         fromCenter: false
-       });
-       column = column + value;
-     }
-   }
- }
-
-}
-
-function pollBoards() {
-  $.ajax({
-           type: "GET",
-           url: "/api/classrooms/{{current_user.classroom_id}}",
-           data: '',
-           contentType: "application/json; charset=utf-8",
-           dataType: "json",
-           username: 'smartrods',
-           password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
-           success: function (result) {
-             //console.log(result);
-           },
-           error: function (error) { console.log(error); }
-  })
-    .done(function(data) {
-
-      // The first time we poll we create everything
-      if (temp === null) {
-        for (i in data) {
-          createBoard(data[i]);
-        }
-      }
-      // Otherwise, check if something has changed
-      else {
-        // Check if some of the boards have changed
-        for (i in data) {
-
-          // Check if board exists in previous data received
-          var last = temp.filter(function (board) {
-            return (board.id === data[i].id);
-          });
-
-          if (last === null) {
-            createBoard(data[i]);
-          }
-          else if (data[i].rods != last[0].rods) {
-            updateBoard(data[i]);
-          }
-          else {
-            console.log('no boards to update');
-          }
-      }
-      };
-
-      temp = data;
-      respondCanvas();
-
-    })
-    .always(function() {
-      setTimeout(pollBoards, 5000);
-    });
-}
-
-function createBoard(data) {
-  console.log('creating new tile for board ' + data.id);
-  // Create new div
-  var board = $(boardDiv).clone();
-  var canvas = $(board).find('canvas');
-  // Give div the id of the board and insert user name
-  canvas.attr('id', String('board_' + data.id));
-  $(board).find('.board-username').text(data.user);
-  // Draw board
-  drawBoard(canvas[0], data.id, data.rods);
-  // Add div to page
-  $('#grid').append(board);
-
-  // $(canvas).mouseenter( function(){
-  //   console.log('entering ', $(canvas).attr('id'));
-  //   var overlay = $(overlayDiv).clone();
-  //   $(canvas).parent().append(overlay);
-  // });
-  //
-  // $(canvas).mouseleave( function(){
-  //   console.log('leaving ', $(canvas).attr('id'));
-  //   $(canvas).parent().find('.overlay').remove();
-  // });
-}
-
-function updateBoard(data) {
-  console.log('updating contents of board ', data.id);
-
-  // Draw board
-  var canvas = $(String('board_' + data.id));
-  drawBoard(canvas, data.id, data.rods);
-
-  // In case board is open in modal, update as well
-  var modalCanvas = $(String('board_' + data.id + '_info'));
-  drawBoard(modalCanvas, data.id, data.rods);
-}
-
-function respondCanvas() {
-  $('canvas[id]').each( function () {
-    var container = $(this).parent();
-    var size = $(container).width();
-    var id = parseInt($(this).attr('id').split('_')[1], 10);
-    var data = temp.filter(function (board) {
-      return (board.id === id);
-    });
-    $(this).attr('width', size*2);
-    $(this).attr('height', size*2);
-    drawBoard(this, id, data[0].rods);
-  });
-
-}
-
-$(document).ready(function() {
-
-  pollBoards();
-
-  $(window).resize(respondCanvas);
-
-  $('#infoModal').on('show.bs.modal', function (event) {
-
-    // Get parent board info
-    var button = $(event.relatedTarget); // Button that triggered the modal
-    var container = button.parent().parent();
-    var board = container.find('canvas');
-    var id = parseInt(board.attr('id').split('_').pop(), 10);
-    var data = temp.filter(function (board) {
-      return (board.id === id);
-    });
-
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-
-    var modal = $(this);
-    modal.find('#info-user').text(data[0].user);
-    modal.find('#info-id').text('Board ID: ' + data[0].id);
-    modal.find('#info-connected').text('Connected: ' + 'N/A');
-    modal.find('#info-battery').text('Battery level: ' + 'N/A');
-
-    var canvas = modal.find('canvas');
-    canvas.attr('id', String('board_' + id + '_info'));
-
-    var size = container.width();
-    $(canvas).attr('width', size*2);
-    $(canvas).attr('height', size*2);
-
-    drawBoard(canvas[0], id, data[0].rods);
-
-  });
-
-  // $('.tile').on("tap", function(e){
-  //   if ($(this).hasClass('hover')) {
-  //     $(this).removeClass('hover');
-  //   }
-  //   else {
-  //     $(this).addClass('hover');
-  //   }
-  // });
-
-
-});
-
-</script>
-
 {% endblock %}
