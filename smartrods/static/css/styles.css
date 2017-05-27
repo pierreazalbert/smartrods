@@ -9,9 +9,20 @@ canvas {
   padding-bottom: 2%;
 }
 
-.modal-canvas {
+.info-canvas {
   max-width: 80%;
   display: block;
+}
+
+.enlarge-canvas {
+  max-height: 100%;
+  display: block;
+  margin:auto;
+  margin-top: -5%;
+}
+
+.modal-title {
+  font-size: 120%;
 }
 
 .modal-info {
@@ -225,7 +236,7 @@ transition: background 0.5s ease;
   opacity: 1;
 }
 
-.modal-header > .row {
+#infoModal .modal-header > .row {
   display: flex;
   align-items: center;
 }
@@ -315,4 +326,32 @@ thead {
 
 .modal-backdrop {
     background-color: #B9B9B9;
+}
+
+#enlargeModal .modal-dialog {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 80%;
+  max-width: 90%;
+}
+
+.play-status {
+  color: #4A4A4A;
+  font-family: "europa";
+  font-weight: 700;
+  font-style: normal;
+  font-size: 100%;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.label {
+  font-family: "europa";
+  font-weight: 700;
+  font-style: normal;
+  font-size: 90%;
+  letter-spacing: 4px;
+  text-transform: uppercase;
 }

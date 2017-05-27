@@ -12,11 +12,6 @@ def home():
     return render_template('home.html')
     #return redirect(url_for('site.exercises'))
 
-@mod.route('/test')
-@login_required
-def test():
-    return render_template('test.html')
-
 @mod.route('/js/<filename>')
 @login_required
 def script(filename):
@@ -26,6 +21,11 @@ def script(filename):
 @login_required
 def classroom():
     return render_template('classroom.html')
+
+@mod.route('/boardzoom/<board_id>')
+@login_required
+def enlarge(board_id):
+    return render_template('boardzoom.html', board_id=board_id)
 
 @mod.route('/exercises')
 @login_required

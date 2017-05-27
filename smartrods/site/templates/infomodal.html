@@ -1,0 +1,94 @@
+<!-- BOARD INFO MODAL -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <div class="row">
+            <div class="col-xs-6">
+              <canvas width="200" height="200" class="info-canvas pull-right"></canvas>
+            </div>
+            <div class="col-xs-6">
+              <h4 class="modal-title" id="info-user" style="padding-bottom:10px;"></h4>
+              <h4 class="modal-info" id="info-id"></h4>
+              <h4 class="modal-info" id="info-connected"></h4>
+              <h4 class="modal-info" id="info-battery"></h4>
+              <button type="button" class="btn btn-default modal-button">Settings</button>
+            </div>
+          </div>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs nav-justified">
+          <li class="active"><a data-toggle="tab" href="#statistics">Statistics</a></li>
+          <li><a data-toggle="tab" href="#activity">Activity log</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="statistics" class="tab-pane fade in active" style="padding-top:7%">
+            <div class="row">
+              <div class="col-xs-6 info-stats stats-title">
+                    <div class="pull-right" style="margin-top:-3px">
+                      Progression
+                      <span class="glyphicon glyphicon-info-sign" style="color:#B9B9B9; font-size:80%" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="left" title="Progression" data-content="Progression is defined as ... write definition here!" ></span>
+                    </div>
+              </div>
+              <div class="col-xs-6 info-stats">
+                <h4>N/A %</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 info-stats stats-title">
+                    <div class="pull-right" style="margin-top:-3px">
+                      Accuracy
+                      <span class="glyphicon glyphicon-info-sign" style="color:#B9B9B9; font-size:80%" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="left" title="Accuracy" data-content="Accuracy is defined as ... write definition here!" ></span>
+                    </div>
+              </div>
+              <div class="col-xs-6 info-stats">
+                <h4>N/A %</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 info-stats stats-title">
+                    <div class="pull-right" style="margin-top:-3px">
+                      Speed
+                      <span class="glyphicon glyphicon-info-sign" style="color:#B9B9B9; font-size:80%" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="left" title="Speed" data-content="Speed is defined as ... write definition here!" ></span>
+                    </div>
+              </div>
+              <div class="col-xs-6 info-stats">
+                <h4>N/A %</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 info-stats stats-title">
+                    <div class="pull-right" style="margin-top:-3px">
+                      Systematicity
+                      <span class="glyphicon glyphicon-info-sign" style="color:#B9B9B9; font-size:80%" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-placement="left" title="Systematicity" data-content="Systematicity is defined as ... write definition here!" ></span>
+                    </div>
+              </div>
+              <div class="col-xs-6 info-stats">
+                <h4>N/A %</h4>
+              </div>
+            </div>
+          </div>
+          <div id="activity" class="tab-pane fade" style="padding-top:2%">
+            <br>
+            <div class="table-responsive">
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Action</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default modal-button" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
