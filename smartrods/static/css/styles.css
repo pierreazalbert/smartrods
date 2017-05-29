@@ -15,7 +15,7 @@ canvas {
 }
 
 .enlarge-canvas {
-  max-height: 100%;
+  max-height: 100vh;
   display: block;
   margin:auto;
   margin-top: -5%;
@@ -329,23 +329,15 @@ thead {
 }
 
 #enlargeModal .modal-dialog {
-  margin-top: 5%;
-  margin-bottom: 5%;
+  margin-top: 10vh;
+  margin-bottom: 1vh;
   margin-left: auto;
   margin-right: auto;
-  max-height: 80%;
-  max-width: 90%;
+  max-height: 70vh;
+  max-width: 90vw;
+  vertical-align: middle;
 }
 
-.play-status {
-  color: #4A4A4A;
-  font-family: "europa";
-  font-weight: 700;
-  font-style: normal;
-  font-size: 100%;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-}
 
 .label {
   font-family: "europa";
@@ -354,4 +346,11 @@ thead {
   font-size: 90%;
   letter-spacing: 4px;
   text-transform: uppercase;
+}
+
+.enlarge-screen {
+  max-height: 80vh;
+  max-width: 80vw;
+  margin-top: auto;
+  margin-bottom: auto;
 }

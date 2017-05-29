@@ -20,8 +20,6 @@ var colours = [
     "#F6A623" // 10 - orange
   ];
 
-var temp = null;
-
 function drawBoard(canvas, id, data) {
 
   var canvasSize = canvas.width;
@@ -79,7 +77,7 @@ function drawBoard(canvas, id, data) {
 
 }
 
-function pollBoards() {
+function pollClassroom() {
   $.ajax({
            type: "GET",
            url: "/api/classrooms/{{current_user.classroom_id}}",
@@ -96,7 +94,7 @@ function pollBoards() {
     .done(function(data) {
 
       // The first time we poll we create everything
-      if (temp === null) {
+      if (tempClassroom === null) {
         for (i in data) {
           createBoard(data[i]);
         }
@@ -107,7 +105,7 @@ function pollBoards() {
         for (i in data) {
 
           // Check if board exists in previous data received
-          var last = temp.filter(function (board) {
+          var last = tempClassroom.filter(function (board) {
             return (board.id === data[i].id);
           });
 
@@ -123,12 +121,57 @@ function pollBoards() {
       }
       };
 
-      temp = data;
+      tempClassroom = data;
       respondCanvas();
 
     })
     .always(function() {
-      setTimeout(pollBoards, 5000);
+      setTimeout(pollClassroom, 5000);
+    });
+}
+
+function pollBoard(board_id) {
+  $.ajax({
+           type: "GET",
+           url: String("/api/boards/" +  board_id),
+           data: '',
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           username: 'smartrods',
+           password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+           success: function (result) { /*console.log(result);*/ },
+           error: function (error) { console.log(error); }
+  })
+    .done(function(data) {
+
+      //console.log(data.activity.slice(-1)[0])
+
+      // The first time we poll we create the board drawing
+      if (boardTemp === null) {
+        console.log('rendering board ' + data.id);
+        $('canvas').attr('id', String('board_' + data.id));
+        $('#enlarge-user').text(data.user);
+        drawBoard($('canvas')[0], data.id, data.activity.slice(-1)[0].rods);
+      }
+      // Otherwise, check if something has changed
+      else {
+
+        if (boardTemp.activity.slice(-1)[0].rods != data.activity.slice(-1)[0].rods) {
+          console.log('updating board ' + data.id);
+          drawBoard($('canvas')[0], data.id, data.activity.slice(-1)[0].rods);
+        }
+        else {
+          console.log('no boards to update');
+        }
+
+      }
+
+      boardTemp = data;
+      //respondCanvas();
+
+    })
+    .always(function() {
+      pollBoardTimer = setTimeout(function() { pollBoard(board_id); }, 5000);
     });
 }
 
@@ -139,7 +182,6 @@ function createBoard(data) {
   var canvas = $(board).find('canvas');
   // Give div the id of the board and insert user name
   canvas.attr('id', String('board_' + data.id));
-  console.log(data.user);
   $(board).find('.board-username').text(data.user);
   // Draw board
   drawBoard(canvas[0], data.id, data.rods);
@@ -154,9 +196,13 @@ function updateBoard(data) {
   var canvas = $(String('board_' + data.id));
   drawBoard(canvas, data.id, data.rods);
 
-  // In case board is open in modal, update as well
-  var modalCanvas = $(String('board_' + data.id + '_info'));
-  drawBoard(modalCanvas, data.id, data.rods);
+  // In case board is open in info modal, update as well
+  var infoCanvas = $(String('board_' + data.id + '_info'));
+  drawBoard(infoCanvas, data.id, data.rods);
+
+  // In case board is open in enlarge modal, update as well
+  var enlargeCanvas = $(String('board_' + data.id + '_enlarge'));
+  drawBoard(enlargeCanvas, data.id, data.rods);
 }
 
 function respondCanvas() {
@@ -164,7 +210,7 @@ function respondCanvas() {
     var container = $(this).parent();
     var size = $(container).width();
     var id = parseInt($(this).attr('id').split('_')[1], 10);
-    var data = temp.filter(function (board) {
+    var data = tempClassroom.filter(function (board) {
       return (board.id === id);
     });
     $(this).attr('width', size*2);
@@ -172,6 +218,23 @@ function respondCanvas() {
     drawBoard(this, id, data[0].rods);
   });
 }
+
+$(document).on('click', '.glyphicon-pause', function () {
+  var button = $(event.target);
+  clearTimeout(pollBoardTimer);
+  console.log('paused board polling');
+  button.removeClass('glyphicon-pause').addClass('glyphicon-play');
+  $('.play-status').removeClass('label-success').addClass('label-default').text('PAUSED');
+});
+
+$(document).on('click', '.glyphicon-play', function () {
+  var button = $(event.target);
+  var board_id = parseInt($(button).parent().parent().parent().find('canvas').attr('id').split('_')[1], 10);
+  pollBoard(board_id);
+  console.log('resumed board polling');
+  button.removeClass('glyphicon-play').addClass('glyphicon-pause');
+  $('.play-status').removeClass('label-default').addClass('label-success').text('LIVE');
+});
 
 $(document).on('click', '.open-zoom', function (event) {
 
@@ -198,12 +261,12 @@ $(document).on('click', '.enlarge-btn', function (event) {
   $(canvas).attr('height', size*2);
 
   // Board data has already been loaded so no need for new ajax query
-  var data = temp.filter(function (board) {
+  var data = tempClassroom.filter(function (board) {
     return (board.id === id);
   });
 
   // Draw canvas using buffered data
-  canvas.attr('id', String('board_' + data[0].id + '_info'));
+  canvas.attr('id', String('board_' + data[0].id + '_enlarge'));
   drawBoard(canvas[0], id, data[0].rods);
   // Fill in modal header fields including board drawing
   modal.find('#enlarge-user').text(data[0].user);
@@ -235,9 +298,9 @@ $(document).on('click', '.enlarge-btn', function (event) {
 //
 });
 
-function getBoardData (event) {
-
-}
+// function getBoardData (event) {
+//
+// }
 
 $(document).on('click', '.info-btn', function (event) {
 
@@ -253,7 +316,7 @@ $(document).on('click', '.info-btn', function (event) {
   $(canvas).attr('height', size*2);
 
   // Board data has already been loaded so no need for new ajax query
-  var data = temp.filter(function (board) {
+  var data = tempClassroom.filter(function (board) {
     return (board.id === id);
   });
 
@@ -262,8 +325,8 @@ $(document).on('click', '.info-btn', function (event) {
   drawBoard(canvas[0], id, data[0].rods);
   // Fill in modal header fields including board drawing
   modal.find('#info-user').text(data[0].user);
-  modal.find('#info-id').text('Board ID: ' + data[0].id);
-  modal.find('#info-connected').text('Connected: ' + (data[0].is_connected? "Yes":"No"));
+  modal.find('#info-id').text(data[0].id);
+  modal.find('#info-connected').text((data[0].is_connected? "Yes":"No"));
 
   // $.ajax({
   //          type: "GET",
@@ -284,15 +347,5 @@ $(document).on('click', '.info-btn', function (event) {
   //   // ... make function to calculate stats based on current exercise
   //
   // });
-
-});
-
-$(document).ready(function() {
-
-  $('[data-toggle="popover"]').popover();
-
-  pollBoards();
-
-  $(window).resize(respondCanvas);
 
 });

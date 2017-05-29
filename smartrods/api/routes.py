@@ -48,12 +48,17 @@ class BoardAPI(Resource):
         board = Board.query.get(id)
         if board is None:
             return {'error': 'There is no board with the requested ID'}, 404
+        activity = []
+        for event in board.rods:
+            activity.append({'timestamp':str(event.timestamp),
+                             'rods':event.rods})
         return {'id':board.id,
                 'is_connected':board.is_connected,
                 'user':board.user.firstname+' '+board.user.lastname,
-                'last_update':str(board.rods[-1].timestamp),
-                #'rods':board.rods[-1].rods}, 200
-                'rods': [board.rods[i].rods for i in range(len(board.rods))][:200]}, 200;
+                'activity':activity}, 200;
+
+                # 'rods': [board.rods[i].rods for i in range(len(board.rods))][:200]
+
 
     # Update rods on board
     def post(self, id):
