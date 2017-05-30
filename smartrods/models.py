@@ -68,12 +68,19 @@ class Rods (db.Model):
 class Activity (db.Model):
     __tablename__ = "activity"
     id = db.Column('id', db.Integer, primary_key = True)
-    type = db.Column('type', db.String, nullable=False)
+    type_id = db.Column('type_id', db.Integer, db.ForeignKey('activity_type.id'))
     started = db.Column('started', db.DateTime)
     ended = db.Column('ended', db.DateTime)
     classroom_id = db.Column('classroom_id', db.Integer, db.ForeignKey('classroom.id'))
 
     events = db.relationship('Event', order_by='Event.timestamp', backref='activity')
+
+class ActivityType (db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50))
+    target = db.Column(db.Integer)
+
+    activities = db.relationship('Activity', backref='type')
 
 class Event (db.Model):
     __tablename__ = "event"
