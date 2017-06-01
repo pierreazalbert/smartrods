@@ -85,10 +85,11 @@ class BoardAPI(Resource):
         newrods = Rods(timestamp=request.json['timestamp'], rods=request.json['rods'], board_id=id)
         db.session.add(newrods)
         db.session.commit()
+
+        # Return data to confirm success
         return {'timestamp':request.json['timestamp'],
                 'rods':request.json['rods'],
                 'board_id':id}, 201
-
 
 api.add_resource(BoardAPI, '/boards/<int:id>', endpoint='board')
 
