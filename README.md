@@ -8,4 +8,4 @@ The SmartRods web application is available [here](http://app.smartrods.co.uk)
 
 ## API
 
-The API documentation is available [here](http://www.smartrods.co.uk/api/docs)
+The API documentation is available [here](http://pierreazalbert.github.io/smartrods)
