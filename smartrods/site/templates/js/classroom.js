@@ -84,8 +84,8 @@ function pollClassroom() {
            data: '',
            contentType: "application/json; charset=utf-8",
            dataType: "json",
-           username: 'smartrods',
-           password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+           //username: 'smartrods',
+           //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
            success: function (result) {
              //console.log(result);
            },
@@ -137,8 +137,8 @@ function pollBoard(board_id) {
            data: '',
            contentType: "application/json; charset=utf-8",
            dataType: "json",
-           username: 'smartrods',
-           password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+           //username: 'smartrods',
+           //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
            success: function (result) { /*console.log(result);*/ },
            error: function (error) { console.log(error); }
   })
