@@ -1,10 +1,10 @@
-from flask import Blueprint, abort, make_response, jsonify, request
+from flask import Blueprint, abort, make_response, jsonify, request, render_template, g
 from flask_httpauth import HTTPBasicAuth
 from flask_restful import Api, Resource
 from smartrods import db
 from smartrods.models import *
 
-mod = Blueprint('api', __name__)    # Initialise Blueprint for API
+mod = Blueprint('api', __name__, static_folder='static', static_url_path='static', template_folder='templates')    # Initialise Blueprint for API
 auth = HTTPBasicAuth()              # Initialise API HTTP Authentication
 api = Api(mod)                      # Initialise API
 
@@ -85,13 +85,18 @@ class BoardAPI(Resource):
         newrods = Rods(timestamp=request.json['timestamp'], rods=request.json['rods'], board_id=id)
         db.session.add(newrods)
         db.session.commit()
+
+        # Return data to confirm success
         return {'timestamp':request.json['timestamp'],
                 'rods':request.json['rods'],
                 'board_id':id}, 201
-
 
 api.add_resource(BoardAPI, '/boards/<int:id>', endpoint='board')
 
 @mod.errorhandler(404)
 def not_found(error):
     return {'error': 'Not found'}, 404
+
+@mod.route('/docs')
+def docs():
+    return render_template('index.html')
