@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, make_response, jsonify, request, render_template
+from flask import Blueprint, abort, make_response, jsonify, request, render_template, g
 from flask_httpauth import HTTPBasicAuth
 from flask_restful import Api, Resource
 from smartrods import db

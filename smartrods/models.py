@@ -85,9 +85,11 @@ class ActivityType (db.Model):
 class Event (db.Model):
     __tablename__ = "event"
     id = db.Column('id', db.Integer, primary_key = True)
+    timestamp = db.Column('timestamp', db.DateTime)
     actions = db.Column('details', db.String, nullable=False)
     outcomes = db.Column('outcomes', db.String)
     statistics = db.Column('statistics', db.String)
-    timestamp = db.Column('timestamp', db.DateTime)
     activity_id = db.Column('activity_id', db.Integer, db.ForeignKey('activity.id'))
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+    rods = db.Column('rods', db.String, nullable=False)
+    board_id = db.Column('board_id', db.Integer, db.ForeignKey('board.id'))
