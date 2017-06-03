@@ -79,6 +79,7 @@ class ActivityType (db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(50))
     target = db.Column(db.Integer)
+    solution_max_size = db.Column(db.Integer)
 
     activities = db.relationship('Activity', backref='type')
 
