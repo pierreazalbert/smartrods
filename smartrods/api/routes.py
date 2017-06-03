@@ -1,26 +1,27 @@
 from flask import Blueprint, abort, make_response, jsonify, request, render_template, g
-from flask_httpauth import HTTPBasicAuth
+from flask_login import login_required
 from flask_restful import Api, Resource
 from smartrods import db
 from smartrods.models import *
 
 mod = Blueprint('api', __name__, static_folder='static', static_url_path='static', template_folder='templates')    # Initialise Blueprint for API
-auth = HTTPBasicAuth()              # Initialise API HTTP Authentication
+#auth = HTTPBasicAuth()              # Initialise API HTTP Authentication
 api = Api(mod)                      # Initialise API
 
-@auth.get_password
-def get_password(username):
-    if username == 'smartrods':
-        return 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1'
-    return None
 
-@auth.error_handler
-def unauthorized():
-    return make_response(jsonify({'error': 'Unauthorized access'}), 401)
+# @auth.get_password
+# def get_password(username):
+#     if username == 'smartrods':
+#         return 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1'
+#     return None
+#
+# @auth.error_handler
+# def unauthorized():
+#     return make_response(jsonify({'error': 'Unauthorized access'}), 401)
 
 class ClassroomAPI(Resource):
 
-    decorators = [auth.login_required]
+    decorators = [login_required]
 
     # Get list of all students in classroom + contents of their boards
     def get(self, id):
@@ -40,7 +41,7 @@ api.add_resource(ClassroomAPI, '/classrooms/<int:id>', endpoint='classroom')
 
 class BoardAPI(Resource):
 
-    decorators = [auth.login_required]
+    decorators = [login_required]
 
     # Get information about a specific board
     # Returns only first 200 rods objects
