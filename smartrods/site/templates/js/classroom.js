@@ -232,17 +232,27 @@ $(document).on('click', '.enlarge-player-pause', function () {
   $('.play-status').removeClass('label-success').addClass('label-default').text('PAUSED');
 });
 
-// $(document).on('click', '.toggle-button:not(.active)', function () {
-//
-//   $('.toggle-button:not(.active)').each( function () {
-//     $(this).addClass('active');
-//   });
-//
-//   // $('.toggle-button.active').each( function () {
-//   //   $(this).removeClass('active');
-//   // });
-//
-// });
+$(document).on('click', '.toggle-button:not(.active)', function () {
+
+  if ($(this).hasClass('toggle-stats')){
+
+    $('.toggle-button').each( function () {
+      $(this).removeClass('active');
+    });
+    $('.toggle-stats').each( function () {
+      $(this).addClass('active');
+    });
+  }
+  else {
+    $('.toggle-button').each( function () {
+      $(this).removeClass('active');
+    });
+    $('.toggle-boards').each( function () {
+      $(this).addClass('active');
+    });
+  }
+
+});
 
 $(document).on('click', '.enlarge-player-play', function () {
   var button = $(event.target);
