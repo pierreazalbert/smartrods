@@ -6,6 +6,11 @@ var canvasDiv = $('<canvas>').attr('width', '200').attr('height', '200');
 var nameDiv = $('<span>').attr('class', 'board-username').attr('style', 'text-align:left');
 var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').attr('onclick', '""').append(canvasDiv, nameDiv, overlayDiv);
 
+var startButton =  $('<span>').attr('class', 'glyphicon glyphicon-play player-start').attr('style', 'color:#4A4A4A; font-size:150%')
+var pauseButton =  $('<span>').attr('class', 'glyphicon glyphicon-pause player-pause').attr('style', 'color:#4A4A4A; font-size:150%')
+var playButton =  $('<span>').attr('class', 'glyphicon glyphicon-play player-resume').attr('style', 'color:#4A4A4A; font-size:150%')
+var stopButton =  $('<span>').attr('class', 'glyphicon glyphicon-stop player-stop').attr('style', 'color:#4A4A4A; font-size:150%; padding-left:1%; padding-right:0.7%')
+
 var colours = [
     "#E1E1E1", // 0 - empty
     "#FFFFFF", // 1 - white
@@ -219,7 +224,7 @@ function respondCanvas() {
   });
 }
 
-$(document).on('click', '.glyphicon-pause', function () {
+$(document).on('click', '.enlarge-player-pause', function () {
   var button = $(event.target);
   clearTimeout(pollBoardTimer);
   console.log('paused board polling');
@@ -227,13 +232,74 @@ $(document).on('click', '.glyphicon-pause', function () {
   $('.play-status').removeClass('label-success').addClass('label-default').text('PAUSED');
 });
 
-$(document).on('click', '.glyphicon-play', function () {
+// $(document).on('click', '.toggle-button:not(.active)', function () {
+//
+//   $('.toggle-button:not(.active)').each( function () {
+//     $(this).addClass('active');
+//   });
+//
+//   // $('.toggle-button.active').each( function () {
+//   //   $(this).removeClass('active');
+//   // });
+//
+// });
+
+$(document).on('click', '.enlarge-player-play', function () {
   var button = $(event.target);
   var board_id = parseInt($(button).parent().parent().parent().find('canvas').attr('id').split('_')[1], 10);
   pollBoard(board_id);
   console.log('resumed board polling');
   button.removeClass('glyphicon-play').addClass('glyphicon-pause');
   $('.play-status').removeClass('label-default').addClass('label-success').text('LIVE');
+});
+
+$(document).on('click', '.classroom-player-start', function () {
+
+  console.log('clicked on start');
+
+  $('.classroom-player-start').each( function () {
+    $(this).removeClass('glyphicon-play').addClass('glyphicon-pause');
+    $(this).removeClass('classroom-player-start').addClass('classroom-player-pause');
+  });
+  $('.classroom-player-stop').each( function () {
+    $(this).removeClass('hidden');
+  });
+  $('.classroom-player-time').each( function () {
+    $(this).removeClass('hidden');
+  });
+});
+
+$(document).on('click', '.classroom-player-pause', function () {
+  console.log('clicked on pause');
+  $('.classroom-player-pause').each( function () {
+    $(this).removeClass('glyphicon-pause').addClass('glyphicon-play');
+    $(this).removeClass('classroom-player-pause').addClass('classroom-player-play');
+  });
+});
+
+$(document).on('click', '.classroom-player-play', function () {
+  console.log('clicked on play');
+  $('.classroom-player-play').each( function () {
+    $(this).removeClass('glyphicon-play').addClass('glyphicon-pause');
+    $(this).removeClass('classroom-player-play').addClass('classroom-player-pause');
+  });
+});
+
+$(document).on('click', '.classroom-player-stop', function () {
+  console.log('clicked on stop');
+  $('.classroom-player-stop').each( function () {
+    $(this).addClass('hidden');
+  });
+  $('.classroom-player-time').each( function () {
+    $(this).addClass('hidden');
+  });
+  $('.classroom-player-play').each( function () {
+    $(this).removeClass('classroom-player-play').addClass('classroom-player-start');
+  });
+  $('.classroom-player-pause').each( function () {
+    $(this).removeClass('glyphicon-pause').addClass('glyphicon-play');
+    $(this).removeClass('classroom-player-pause').addClass('classroom-player-start');
+  });
 });
 
 $(document).on('click', '.open-zoom', function (event) {

@@ -33,6 +33,22 @@ canvas {
   font-size: 15px;
 }
 
+.classroom-player-time {
+  font-family: "europa";
+  font-weight: 500;
+  font-style: normal;
+  color: #9B9B9B;
+  font-size: 15px;
+}
+
+.classroom-player-activity {
+  font-family: "europa";
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
 .modal-button {
   background-color: #E1E1E1 !important;
   color: #4A4A4A;
@@ -140,7 +156,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
 .navbar .nav > .active > a:after {
-              position: absolute;
+            position: absolute;
              border-bottom: 2px solid #4A4A4A;
              bottom: 0;
              content: "";
@@ -353,4 +369,50 @@ thead {
   max-width: 80vw;
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.classroom-toggle {
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .classroom-toggle {
+    text-align:right;
+    margin-top:-10px;
+  }
+}
+
+.activity-player {
+  text-align:center;
+  padding-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .activity-player {
+    display:flex;
+    align-items:center;
+    border-radius:5px;
+    padding-top:10px;
+    padding-bottom:10px;
+    text-align: left
+  }
+}
+
+.btn-toggle > button:hover {
+  background-color: #E1E1E1 !important;
+  color: #4A4A4A;
+}
+
+.btn-toggle > .active {
+  color: white !important;
+  box-shadow: none !important;
+  background-color: #4A4A4A !important;
+}
+
+.btn-toggle > .active:hover, .btn-toggle > .active:focus {
+  color: white !important;
+  background-color: #4A4A4A !important;
+}
+
+.glyphicon {
+  color:#4A4A4A !important;
+  font-size:150% !important;
 }

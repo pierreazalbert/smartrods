@@ -3,14 +3,14 @@ from flask_user import UserMixin
 
 class School (db.Model):
     __tablename__ = "school"
-    id = db.Column('id', db.Integer, primary_key = True)
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
     name = db.Column('name', db.String(50), nullable=False, unique=True)
 
     classrooms = db.relationship('Classroom', backref='school')
 
 class Classroom (db.Model):
     __tablename__ = "classroom"
-    id = db.Column('id', db.Integer, primary_key = True)
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
     name = db.Column('name', db.String(50), nullable=False)
     school_id = db.Column('school_id', db.Integer, db.ForeignKey('school.id'))
 
@@ -19,7 +19,7 @@ class Classroom (db.Model):
 
 class User (db.Model, UserMixin):
     __tablename__ = "user"
-    id = db.Column('id', db.Integer, primary_key = True)
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
 
     # User Authentication information
     username = db.Column('username', db.String(50), nullable=False, unique=True)
@@ -43,17 +43,17 @@ class User (db.Model, UserMixin):
     events = db.relationship('Event', backref='user')
 
 class Role(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
     name = db.Column(db.String(50), unique=True)
 
 class UserRoles(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
 
 class Board (db.Model):
     __tablename__ = "board"
-    id = db.Column('id', db.Integer, primary_key = True)
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
     is_connected = db.Column('is_connected', db.Boolean(), nullable=False, default=False)
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
 
@@ -67,7 +67,7 @@ class Rods (db.Model):
 
 class Activity (db.Model):
     __tablename__ = "activity"
-    id = db.Column('id', db.Integer, primary_key = True)
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
     type_id = db.Column('type_id', db.Integer, db.ForeignKey('activity_type.id'))
     started = db.Column('started', db.DateTime)
     ended = db.Column('ended', db.DateTime)
@@ -76,7 +76,7 @@ class Activity (db.Model):
     events = db.relationship('Event', order_by='Event.timestamp', backref='activity')
 
 class ActivityType (db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
     name = db.Column(db.String(50))
     target = db.Column(db.Integer)
     solution_max_size = db.Column(db.Integer)
@@ -85,9 +85,9 @@ class ActivityType (db.Model):
 
 class Event (db.Model):
     __tablename__ = "event"
-    id = db.Column('id', db.Integer, primary_key = True)
+    id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
     timestamp = db.Column('timestamp', db.DateTime)
-    actions = db.Column('details', db.String, nullable=False)
+    actions = db.Column('actions', db.String)
     outcomes = db.Column('outcomes', db.String)
     statistics = db.Column('statistics', db.String)
     activity_id = db.Column('activity_id', db.Integer, db.ForeignKey('activity.id'))
