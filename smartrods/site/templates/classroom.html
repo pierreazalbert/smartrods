@@ -71,7 +71,6 @@
 
 <!-- BOARD INFO MODAL -->
 {% include 'infomodal.html' %}
-
 <!-- BOARD ENLARGE MODAL -->
 {% include 'enlargemodal.html' %}
 
@@ -80,6 +79,10 @@
 {% block scripts %}
 {{ super() }}
 <script src="{{ url_for('site.script', filename='classroom.js') }}"></script>
+<script src="{{ url_for('site.script', filename='boards.js') }}"></script>
+<script src="{{ url_for('site.script', filename='enlarge.js') }}"></script>
+<script src="{{ url_for('site.script', filename='info.js') }}"></script>
+<script src="{{ url_for('site.script', filename='player.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jcanvas.min.js') }}"></script>
 <script>
 
@@ -87,8 +90,13 @@ var tempClassroom = null;
 
 $(document).ready(function() {
 
+  // Enable bootstrap popovers
   $('[data-toggle="popover"]').popover();
 
+  // Update player status
+  //updatePlayer();
+
+  // Synchronise boards with db
   pollClassroom();
 
   $(window).resize(respondCanvas);
