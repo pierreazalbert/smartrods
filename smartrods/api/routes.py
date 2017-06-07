@@ -25,7 +25,21 @@ api = Api(mod)                      # Initialise API
 
 class ActivityAPI(Resource):
 
-    decorators = [login_required]
+    #decorators = [login_required]
+
+    def get(self, id):
+        # Check classroom exists
+        classroom = Classroom.query.get(id) #check existence instead of loading object?
+        if classroom is None:
+            return {'error': 'There is no classroom with the requested ID'}, 404
+        activity = classroom.activities[-1]
+        if activity.type.id == 0:
+            activityname = activity.type.name
+        else:
+            activityname = activity.type.name + " to " + str(activity.type.target)
+        return {'activity_id':activity.id,
+                'activity_name':activityname,
+                'started':str(activity.started)}, 200;
 
     def put(self, id):
 

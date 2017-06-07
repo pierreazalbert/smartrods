@@ -20,7 +20,7 @@
       <span class="classroom-player-activity" style="padding-left:3%">NO ACTIVITY</span>
       <span class="glyphicon glyphicon-play classroom-player-start" aria-hidden="true" style="padding-left:2.5%;margin-bottom:4px"></span>
       <span class="glyphicon glyphicon-stop classroom-player-stop hidden" aria-hidden="true" style="padding-left:1%; padding-right:0.7%;margin-bottom:4px"></span>
-      <span class="classroom-player-time hidden" style="padding-left:2%">0h 0min 0sec</span>
+      <span class="classroom-player-time hidden" style="padding-left:2%">00:00:00</span>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 classroom-toggle">
       <div class="btn-group btn-toggle">
@@ -42,7 +42,7 @@
       <span class="glyphicon glyphicon-stop classroom-player-stop hidden" aria-hidden="true" style="padding-left:1%; padding-right:0.7%"></span>
     </div>
     <div class="col-xs-12 activity-player">
-      <span class="classroom-player-time">0h 0min 0sec</span>
+      <span class="classroom-player-time">00:00:00</span>
     </div>
     </div>
 
@@ -93,11 +93,8 @@ $(document).ready(function() {
   // Enable bootstrap popovers
   $('[data-toggle="popover"]').popover();
 
-  // Update player status
-  //updatePlayer();
-
-  // Synchronise boards with db
-  pollClassroom();
+  // Synchronise classroom data (boards, stats, player)
+  updateClassroom();
 
   $(window).resize(respondCanvas);
 

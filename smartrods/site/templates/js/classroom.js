@@ -25,7 +25,7 @@ var colours = [
     "#F6A623" // 10 - orange
   ];
 
-function pollClassroom() {
+function updateClassroom() {
   $.ajax({
            type: "GET",
            url: "/api/classrooms/{{current_user.classroom_id}}",
@@ -40,6 +40,9 @@ function pollClassroom() {
            error: function (error) { console.log(error); }
   })
     .done(function(data) {
+
+      // Update player status
+
 
       // The first time we poll we create everything
       if (tempClassroom === null) {
