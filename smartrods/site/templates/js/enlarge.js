@@ -1,18 +1,15 @@
 $(document).on('click', '.open-zoom', function (event) {
-
   var button = $(event.target); // Button that triggered the modal
-
   var container = button.parent().parent().parent().parent();
   var board = container.find('canvas');
   var id = parseInt(board.attr('id').split('_')[1], 10);
   var zoom = window.open("/boardzoom/" + id);
-
 });
 
 $(document).on('click', '.enlarge-player-play', function () {
   var button = $(event.target);
   var board_id = parseInt($(button).parent().parent().parent().find('canvas').attr('id').split('_')[1], 10);
-  pollBoard(board_id);
+  // RESUME UPDATE OF MODAL BOARD
   console.log('resumed board polling');
   button.removeClass('glyphicon-play').addClass('glyphicon-pause');
   $('.play-status').removeClass('label-default').addClass('label-success').text('LIVE');
@@ -20,7 +17,7 @@ $(document).on('click', '.enlarge-player-play', function () {
 
 $(document).on('click', '.enlarge-player-pause', function () {
   var button = $(event.target);
-  clearTimeout(pollBoardTimer);
+  // PAUSE UPDATES OF MODAL BOARD
   console.log('paused board polling');
   button.removeClass('glyphicon-pause').addClass('glyphicon-play');
   $('.play-status').removeClass('label-success').addClass('label-default').text('PAUSED');
@@ -46,7 +43,7 @@ $(document).on('click', '.enlarge-btn', function (event) {
 
   // Draw canvas using buffered data
   canvas.attr('id', String('board_' + data[0].id + '_enlarge'));
-  drawBoard(canvas[0], id, data[0].rods);
+  drawBoard(canvas[0], id, data[0].events.slice(-1)[0].rods);
   // Fill in modal header fields including board drawing
   modal.find('#enlarge-user').text(data[0].user);
 

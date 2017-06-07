@@ -16,32 +16,40 @@ $(document).on('click', '.info-btn', function (event) {
     return (board.id === id);
   });
 
+  var last_event = data[0].events.slice(-1)[0];
   // Draw canvas using buffered data
   canvas.attr('id', String('board_' + data[0].id + '_info'));
-  drawBoard(canvas[0], id, data[0].rods);
+  drawBoard(canvas[0], id, last_event.rods);
   // Fill in modal header fields including board drawing
   modal.find('#info-user').text(data[0].user);
   modal.find('#info-id').text(data[0].id);
   modal.find('#info-connected').text((data[0].is_connected? "Yes":"No"));
 
-  // $.ajax({
-  //          type: "GET",
-  //          url: String("/api/boards/"+id),
-  //          data: '',
-  //          contentType: "application/json; charset=utf-8",
-  //          dataType: "json",
-  //          username: 'smartrods',
-  //          password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
-  //          success: function (result) {/*console.log(result);*/},
-  //          error: function (error) { console.log(error); }
-  // }).done(function(data) {
-  //
-  //   // Render table for activity log
-  //   // ... make function to compare rods objects and extract changes
-  //
-  //   // Fill in data for statistics tab
-  //   // ... make function to calculate stats based on current exercise
-  //
-  // });
+  // Update stats using buffered data
+  var stats = JSON.parse(last_event.statistics.replace(/'/g, '"'));
+  if(last_event.outcomes == "-") {
+    console.log(stats);
+    modal.find('#stats-progression').text("-");
+    modal.find('#stats-accuracy').text("-");
+    modal.find('#stats-fluency').text("-");
+    modal.find('#stats-systematicity').text("-");
+  }
+  else {
+    console.log(stats);
+    modal.find('#stats-progression').text(stats.progression);
+    modal.find('#stats-accuracy').text(stats.accuracy);
+    modal.find('#stats-fluency').text(stats.fluency);
+    modal.find('#stats-systematicity').text(stats.systematicity);
+  }
 
+  // Update activity log using buffered data (after clearing table)
+  var table = modal.find('tbody');
+  table.empty();
+  for (i in data[0].events) {
+    var event = data[0].events[i];
+    var newrow = $('<tr>').append($('<td>').text(event.timestamp.slice(5,-4)),
+                                  $('<td>').text(event.actions),
+                                  $('<td>').text(event.outcomes));
+    table.append(newrow);
+  }
 });

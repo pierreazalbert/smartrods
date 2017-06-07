@@ -19,39 +19,41 @@ function drawBoard(canvas, id, data) {
   });
 
   // Parse input data
-  var input =  data.replace(/{/g, "[").replace(/}/g, "]");
-  var rods = JSON.parse("[" + input + "]")[0];
+  if (data != "-") {
+      var input =  data.replace(/{/g, "[").replace(/}/g, "]");
+      var rods = JSON.parse("[" + input + "]")[0];
 
-  for (var row in rods) {
-   var column = 0;
-   while (column < 10) {
-     //console.log('column ' + column);
-     var value = parseInt(rods[row][column], 10);
-     //console.log('cell value: ' + value);
-     if (value === 0) {
-       column = column + 1;
-       //console.log('empty cell');
-     } else {
-       //console.log("adding rod " + value + " to board " + id);
-       // Draw rod
-       $(canvas).drawRect({
-         layer: false,
-         name: String("rod_" + value),
-         //groups: ["rods"],
-         x: canvasSize * 0.05 + boardSize / 10 * column,
-         y: canvasSize * 0.05 + boardSize / 10 * row,
-         height: boardSize / 10,
-         width: boardSize * value / 10,
-         fillStyle: $(colours)[value],
-         strokeStyle: "#E1E1E1",
-         strokeWidth: boardSize / 100,
-         cornerRadius: boardSize / 50,
-         fromCenter: false
-       });
-       column = column + value;
+      for (var row in rods) {
+       var column = 0;
+       while (column < 10) {
+         //console.log('column ' + column);
+         var value = parseInt(rods[row][column], 10);
+         //console.log('cell value: ' + value);
+         if (value === 0) {
+           column = column + 1;
+           //console.log('empty cell');
+         } else {
+           //console.log("adding rod " + value + " to board " + id);
+           // Draw rod
+           $(canvas).drawRect({
+             layer: false,
+             name: String("rod_" + value),
+             //groups: ["rods"],
+             x: canvasSize * 0.05 + boardSize / 10 * column,
+             y: canvasSize * 0.05 + boardSize / 10 * row,
+             height: boardSize / 10,
+             width: boardSize * value / 10,
+             fillStyle: $(colours)[value],
+             strokeStyle: "#E1E1E1",
+             strokeWidth: boardSize / 100,
+             cornerRadius: boardSize / 50,
+             fromCenter: false
+           });
+           column = column + value;
+         }
+       }
      }
    }
- }
 
 }
 
@@ -64,7 +66,8 @@ function createBoard(data) {
   canvas.attr('id', String('board_' + data.id));
   $(board).find('.board-username').text(data.user);
   // Draw board
-  drawBoard(canvas[0], data.id, data.rods);
+  //console.log(data.events.slice(-1)[0].rods);
+  drawBoard(canvas[0], data.id, data.events.slice(-1)[0].rods);
   // Add div to page
   $('#grid').append(board);
 }
@@ -95,6 +98,7 @@ function respondCanvas() {
     });
     $(this).attr('width', size*2);
     $(this).attr('height', size*2);
-    drawBoard(this, id, data[0].rods);
+    //console.log(data[0].events.slice(-1)[0].rods);
+    drawBoard(this, id, data[0].events.slice(-1)[0].rods);
   });
 }

@@ -6,11 +6,6 @@ var canvasDiv = $('<canvas>').attr('width', '200').attr('height', '200');
 var nameDiv = $('<span>').attr('class', 'board-username').attr('style', 'text-align:left');
 var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').attr('onclick', '""').append(canvasDiv, nameDiv, overlayDiv);
 
-var startButton =  $('<span>').attr('class', 'glyphicon glyphicon-play player-start').attr('style', 'color:#4A4A4A; font-size:150%')
-var pauseButton =  $('<span>').attr('class', 'glyphicon glyphicon-pause player-pause').attr('style', 'color:#4A4A4A; font-size:150%')
-var playButton =  $('<span>').attr('class', 'glyphicon glyphicon-play player-resume').attr('style', 'color:#4A4A4A; font-size:150%')
-var stopButton =  $('<span>').attr('class', 'glyphicon glyphicon-stop player-stop').attr('style', 'color:#4A4A4A; font-size:150%; padding-left:1%; padding-right:0.7%')
-
 var colours = [
     "#E1E1E1", // 0 - empty
     "#FFFFFF", // 1 - white
@@ -35,14 +30,22 @@ function updateClassroom() {
            //username: 'smartrods',
            //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
            success: function (result) {
-             //console.log(result);
+             $('.classroom-player-status').each( function () {
+               $(this)[0].textContent = "LIVE";
+               $(this).removeClass('label-danger').removeClass('label-info').addClass('label-success');
+             });
            },
-           error: function (error) { console.log(error); }
+           error: function (error) {
+             $('.classroom-player-status').each( function () {
+               $(this)[0].textContent = "DISCONNECTED";
+               $(this).removeClass('label-success').addClass('label-danger');
+             });
+             console.log(error);
+           }
   })
     .done(function(data) {
 
       // Update player status
-
 
       // The first time we poll we create everything
       if (tempClassroom === null) {
@@ -77,54 +80,54 @@ function updateClassroom() {
 
     })
     .always(function() {
-      setTimeout(pollClassroom, 5000);
+      setTimeout(updateClassroom, 5000);
     });
 }
 
-function pollBoard(board_id) {
-  $.ajax({
-           type: "GET",
-           url: String("/api/boards/" +  board_id),
-           data: '',
-           contentType: "application/json; charset=utf-8",
-           dataType: "json",
-           //username: 'smartrods',
-           //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
-           success: function (result) { /*console.log(result);*/ },
-           error: function (error) { console.log(error); }
-  })
-    .done(function(data) {
-
-      //console.log(data.activity.slice(-1)[0])
-
-      // The first time we poll we create the board drawing
-      if (boardTemp === null) {
-        console.log('rendering board ' + data.id);
-        $('canvas').attr('id', String('board_' + data.id));
-        $('#enlarge-user').text(data.user);
-        drawBoard($('canvas')[0], data.id, data.activity.slice(-1)[0].rods);
-      }
-      // Otherwise, check if something has changed
-      else {
-
-        if (boardTemp.activity.slice(-1)[0].rods != data.activity.slice(-1)[0].rods) {
-          console.log('updating board ' + data.id);
-          drawBoard($('canvas')[0], data.id, data.activity.slice(-1)[0].rods);
-        }
-        else {
-          console.log('no boards to update');
-        }
-
-      }
-
-      boardTemp = data;
-      //respondCanvas();
-
-    })
-    .always(function() {
-      pollBoardTimer = setTimeout(function() { pollBoard(board_id); }, 5000);
-    });
-}
+// function pollBoard(board_id) {
+//   $.ajax({
+//            type: "GET",
+//            url: String("/api/boards/" +  board_id),
+//            data: '',
+//            contentType: "application/json; charset=utf-8",
+//            dataType: "json",
+//            //username: 'smartrods',
+//            //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+//            success: function (result) { /*console.log(result);*/ },
+//            error: function (error) { console.log(error); }
+//   })
+//     .done(function(data) {
+//
+//       //console.log(data.activity.slice(-1)[0])
+//
+//       // The first time we poll we create the board drawing
+//       if (boardTemp === null) {
+//         console.log('rendering board ' + data.id);
+//         $('canvas').attr('id', String('board_' + data.id));
+//         $('#enlarge-user').text(data.user);
+//         drawBoard($('canvas')[0], data.id, data.activity.slice(-1)[0].rods);
+//       }
+//       // Otherwise, check if something has changed
+//       else {
+//
+//         if (boardTemp.activity.slice(-1)[0].rods != data.activity.slice(-1)[0].rods) {
+//           console.log('updating board ' + data.id);
+//           drawBoard($('canvas')[0], data.id, data.activity.slice(-1)[0].rods);
+//         }
+//         else {
+//           console.log('no boards to update');
+//         }
+//
+//       }
+//
+//       boardTemp = data;
+//       //respondCanvas();
+//
+//     })
+//     .always(function() {
+//       pollBoardTimer = setTimeout(function() { pollBoard(board_id); }, 5000);
+//     });
+// }
 
 // Toggle button between all boards and all stats
 $(document).on('click', '.toggle-button:not(.active)', function () {

@@ -34,7 +34,7 @@
   <div class='row visible-xs-block'>
     <div class="col-xs-12">
     <div class="col-xs-12 activity-player">
-      <span class="label label-success classroom-play-status">LIVE</span>
+      <span class="label label-success classroom-player-status">LIVE</span>
       <span class="classroom-player-activity" style="padding-left:2%">NO ACTIVITY</span>
     </div>
     <div class="col-xs-12 activity-player">
@@ -88,10 +88,19 @@
 
 var tempClassroom = null;
 
+$(window).bind("beforeunload",function(event) {
+    return "Custom message";
+});
+
 $(document).ready(function() {
 
   // Enable bootstrap popovers
   $('[data-toggle="popover"]').popover();
+
+  $('.classroom-player-status').each( function () {
+    $(this)[0].textContent = "IDLE";
+    $(this).removeClass('label-success').addClass('label-default');
+  });
 
   // Synchronise classroom data (boards, stats, player)
   updateClassroom();

@@ -7,6 +7,36 @@ Exercises
 
 {% block main %}
   <div class="container">
-  <h1>Exercise list</h1>
+  <h1>Exercise library</h1>
+  <br>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color:#F6F6F6; border-radius:10px; padding-left:5%">
+      <h3>Number bonds</h3>
+      <!--  INSERT TOGGLE BUTTONS FOR CHOOSING TARGET NUMBER -->
+      <form class="form-horizontal col-xs-12 col-sm-8 col-md-8 col-lg-8" method="post" action="">
+        <div class="form-group">
+          <h4 style="padding-top:10px">Target number</h4>
+          <div data-toggle="buttons">
+            <label class="btn btn-circle btn-lg active" style="padding-left:12px; background-color:#F6A623"><input type="radio" name="10" value="10">10</label>
+            <label class="btn btn-circle btn-lg" style="background-color:#4990E2"><input type="radio" name="9" value="9">9</label>
+            <label class="btn btn-circle btn-lg" style="background-color:#8B572A"><input type="radio" name="8" value="8">8</label>
+            <label class="btn btn-circle btn-lg" style="background-color:#4A4A4A"><input type="radio" name="7" value="7">7</label>
+            <label class="btn btn-circle btn-lg" style="background-color:#417505"><input type="radio" name="6" value="6">6</label>
+            <label class="btn btn-circle btn-lg" style="background-color:#F7E500"><input type="radio" name="5" value="5">5</label>
+            <label class="btn btn-circle btn-lg" style="background-color:#BD0FE1"><input type="radio" name="4" value="4">4</label>
+            <label class="btn btn-circle btn-lg" style="background-color:#7ED321"><input type="radio" name="3" value="3">3</label>
+          </div>
+        </div>
+    </form>
+    <form class="form-horizontal col-xs-12 col-sm-4 col-md-4 col-lg-4" method="post" action="">
+      <div class="form-group">
+        <h4 style="padding-top:10px">Maximum solution size</h4>
+        <div data-toggle="buttons">
+        </div>
+      </div>
+  </form>
+      <!--  INSERT TOGGLE BUTTONS FOR CHOOSING SOL MAX SIZE -->
+    </div>
+  </div>
 </div>
 {% endblock %}

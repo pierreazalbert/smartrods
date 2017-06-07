@@ -38,6 +38,7 @@ class ActivityAPI(Resource):
         else:
             activityname = activity.type.name + " to " + str(activity.type.target)
         return {'activity_id':activity.id,
+                'activity_type':activity.type.id,
                 'activity_name':activityname,
                 'started':str(activity.started)}, 200;
 
@@ -97,11 +98,19 @@ class ClassroomAPI(Resource):
             return {'error': 'There is no classroom with the requested ID'}, 404
         results = []
         for user in classroom.users:
+            events = []
+            for event in user.activities[-1].events:
+                if event.user_id == user.id:
+                    events.append({ 'timestamp':event.timestamp,
+                                'actions':event.actions,
+                                'outcomes':event.outcomes,
+                                'statistics':event.statistics,
+                                'rods':event.rods})
             results.append({'id':user.board.id,
                             'is_connected':user.board.is_connected,
                             'user':user.firstname+' '+user.lastname,
                             'last_update':str(user.board.rods[-1].timestamp),
-                            'rods':user.board.rods[-1].rods})
+                            'events':events})
         return make_response(jsonify(results), 200)
 
 api.add_resource(ClassroomAPI, '/classrooms/<int:id>', endpoint='classroom')

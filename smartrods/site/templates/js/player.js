@@ -1,27 +1,7 @@
 var clockTimer;
 
 $(document).on('click', '.classroom-player-start', function () {
-
-  console.log('clicked on start');
-
-  $('.classroom-player-start').each( function () {
-    $(this).removeClass('glyphicon-play').addClass('glyphicon-pause');
-    $(this).removeClass('classroom-player-start').addClass('classroom-player-pause');
-  });
-  $('.classroom-player-stop').each( function () {
-    $(this).removeClass('hidden');
-  });
-  $('.classroom-player-time').each( function () {
-    $(this).removeClass('hidden');
-  });
-
-  $('.classroom-player-time').each( function () {
-    $(this)[0].textContent = "00:00:00";
-  });
-
-  clockTimer = setInterval(updateClock, 1000);
-
-
+  window.location = "{{ url_for('site.exercises') }}";
 });
 
 $(document).on('click', '.classroom-player-pause', function () {
@@ -87,7 +67,7 @@ function updateClock () {
 function updatePlayer () {
   $.ajax({
            type: "GET",
-           url: "/api/classrooms/{{current_user.classroom_id}}",
+           url: "/api/classrooms/{{current_user.classroom_id}}/activities",
            data: '',
            contentType: "application/json; charset=utf-8",
            dataType: "json",
@@ -99,8 +79,12 @@ function updatePlayer () {
     .done(function(data) {
 
       $('.classroom-player-activity').each( function () {
+          $(this)[0].textContent = data['activity_name'];
+          console.log(data['activity_name']);
+      });
+      if (parseInt(data['activity_type'], 10) == 0) {
 
-      })
+      }
 
     });
 }
