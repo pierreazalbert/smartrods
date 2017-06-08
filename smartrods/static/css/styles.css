@@ -471,3 +471,37 @@ tbody {
   border:none;
   box-shadow: none;
 }
+/*
+.btn.btn-default.btn-spinner {
+  width:50px;
+  height:40px;
+  background-color:#4A4A4A;
+  margin-top:0px;
+  color:white!important;
+}*/
+
+.input-group-btn > .btn.btn-default {
+  width:50px;
+  height:40px;
+  background-color:#E1E1E1!important;
+  color:#4A4A4A;
+  margin-top:0px;
+  font-size: 15px;
+}
+
+.glyphicon-minus {
+  margin-top: 2px;
+}
+
+.glyphicon-plus {
+  margin-top: 2px;
+  margin-left: 2px;
+}
+
+#spinner {
+  text-align: center;
+  font-family: 'europa';
+  font-weight: 700;
+  font-size: 180%;
+  box-shadow: none;
+}

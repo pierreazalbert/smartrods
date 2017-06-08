@@ -1,20 +1,12 @@
-{% extends 'newbase.html' %}
-
-{% block title %}
-{{ super() }}
-Exercises
-{% endblock %}
-
-{% block main %}
-  <div class="container">
+{% extends 'newbase.html' %} {% block title %} {{ super() }} Exercises {% endblock %} {% block main %}
+<div class="container">
   <h1>Exercise library</h1>
   <br>
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color:#F6F6F6; border-radius:10px; padding-left:5%">
       <h3>Number bonds</h3>
-      <!--  INSERT TOGGLE BUTTONS FOR CHOOSING TARGET NUMBER -->
-      <form class="form-horizontal col-xs-12 col-sm-8 col-md-8 col-lg-8" method="post" action="">
-        <div class="form-group">
+      <form class="form-horizontal" id="numberbonds" action="">
+        <div class="form-group col-xs-12 col-sm-8 col-md-8 col-lg-8" style="padding-right:5%;">
           <h4 style="padding-top:10px">Target number</h4>
           <div data-toggle="buttons">
             <label class="btn btn-circle btn-lg active" style="padding-left:12px; background-color:#F6A623"><input type="radio" name="10" value="10">10</label>
@@ -27,16 +19,49 @@ Exercises
             <label class="btn btn-circle btn-lg" style="background-color:#7ED321"><input type="radio" name="3" value="3">3</label>
           </div>
         </div>
-    </form>
-    <form class="form-horizontal col-xs-12 col-sm-4 col-md-4 col-lg-4" method="post" action="">
-      <div class="form-group">
+        <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
         <h4 style="padding-top:10px">Maximum solution size</h4>
-        <div data-toggle="buttons">
+        <div class="input-group" style="width:170px;height:40px; padding-top:25px">
+          <span class="input-group-btn">
+        <button type="button" class="btn btn-default btn-spinner" data-value="decrease" data-target="#spinner" data-toggle="spinner">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+          </span>
+          <input type="text" data-ride="spinner" id="spinner" class="form-control input-number" value="2" data-min="2" data-max="10" style="height:40px">
+          <span class="input-group-btn">
+        <button type="button" class="btn btn-default btn-spinner" data-value="increase" data-target="#spinner" data-toggle="spinner">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+          </span>
         </div>
-      </div>
-  </form>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <button type="button" id="#begin-numberbonds" class="btn btn-default" onclick="startNumberbonds()">Start Activity</button>
+          </div>
+
+      </form>
+
       <!--  INSERT TOGGLE BUTTONS FOR CHOOSING SOL MAX SIZE -->
     </div>
   </div>
 </div>
+{% endblock %} {% block scripts %} {{ super() }}
+<script src="{{ url_for('static', filename='js/bootstrap-spinner.min.js') }}"></script>
+<script>
+  $('.spinner').spinner();
+
+  function startNumberbonds() {
+    var targetnb = parseInt($('.btn-circle.active').text(), 10);
+    console.log(targetnb);
+    var solmaxsize = parseInt($('#spinner').val(), 10);
+    console.log(solmaxsize);
+  }
+
+  // $(document).ready(function() {
+  //
+  //   // Enable bootstrap spinner
+  //
+  //
+  // });
+</script>
 {% endblock %}
