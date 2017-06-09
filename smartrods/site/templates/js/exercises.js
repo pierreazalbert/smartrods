@@ -1,22 +1,50 @@
-function startActivity() {
+function getActivityTypeID(name, target_number, solution_max_size) {
 
-  console.log('started activity');
+  var activity_type_id;
 
-  $('.classroom-player-start').each( function () {
-    $(this).removeClass('glyphicon-play').addClass('glyphicon-pause');
-    $(this).removeClass('classroom-player-start').addClass('classroom-player-pause');
+  $.ajax({
+           type: "GET",
+           url: "/api/activity_types?activity_name=" + String(name) + "&target_number=" + String(target_number) + "&solution_max_size=" + String(solution_max_size),
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           async: false,
+           //username: 'smartrods',
+           //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+           success: function (result) {
+             activity_type_id = result["activity_type_id"];
+           },
+           error: function (error) {
+             console.log(error);
+           }
   });
-  $('.classroom-player-stop').each( function () {
-    $(this).removeClass('hidden');
-  });
-  $('.classroom-player-time').each( function () {
-    $(this).removeClass('hidden');
-  });
 
-  $('.classroom-player-time').each( function () {
-    $(this)[0].textContent = "00:00:00";
+  return activity_type_id;
+
+}
+
+function startNumberbonds() {
+
+  var targetnb = parseInt($('.btn-circle.active').text(), 10);
+  console.log(targetnb);
+  var solmaxsize = parseInt($('#spinner').val(), 10);
+  console.log(solmaxsize);
+  var activity_type_id = getActivityTypeID('NumberBonds', targetnb, solmaxsize);
+  console.log(activity_type_id);
+
+  $.ajax({
+           type: "POST",
+           url: "/api/classrooms/{{current_user.classroom_id}}/activities",
+           data: '{"action":"start", "activity_type":' + activity_type_id + '}',
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           //username: 'smartrods',
+           //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+           success: function (result) {
+             console.log(result);
+           },
+           error: function (error) {
+             console.log(error);
+           }
   });
-
-  clockTimer = setInterval(updateClock, 1000);
-
-});
+  window.location = "{{ url_for('site.classroom') }}";
+}

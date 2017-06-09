@@ -1,5 +1,6 @@
 from smartrods import db
 from flask_user import UserMixin
+import datetime
 
 class School (db.Model):
     __tablename__ = "school"
@@ -15,7 +16,7 @@ class Classroom (db.Model):
     school_id = db.Column('school_id', db.Integer, db.ForeignKey('school.id'))
 
     users = db.relationship('User', backref='classroom')
-    activities = db.relationship('Activity', backref='classroom')
+    activities = db.relationship('Activity', backref='classroom', order_by='asc(Activity.started)')
 
 class User (db.Model, UserMixin):
     __tablename__ = "user"
@@ -39,8 +40,8 @@ class User (db.Model, UserMixin):
     roles = db.relationship('Role', secondary='user_roles',
             backref=db.backref('users', lazy='dynamic'))
     board = db.relationship('Board', uselist=False, backref='user')
-    activities = db.relationship('Activity', secondary='classroom', backref='users')
-    events = db.relationship('Event', backref='user')
+    activities = db.relationship('Activity', secondary='classroom', backref='users', order_by='asc(Activity.started)')
+    events = db.relationship('Event', backref='user', order_by='asc(Event.timestamp)')
 
 class Role(db.Model):
     id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
@@ -57,23 +58,25 @@ class Board (db.Model):
     is_connected = db.Column('is_connected', db.Boolean(), nullable=False, default=False)
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
 
-    rods = db.relationship('Rods', order_by='Rods.timestamp', backref='board')
+    events = db.relationship('Event', order_by='asc(Event.timestamp)', backref='board')
 
-class Rods (db.Model):
-    __tablename__ = "rods"
-    timestamp = db.Column('timestamp', db.DateTime, primary_key = True)
-    rods = db.Column('rods', db.String, nullable=False)
-    board_id = db.Column('board_id', db.Integer, db.ForeignKey('board.id'), primary_key = True)
+# class Rods (db.Model):
+#     __tablename__ = "rods"
+#     timestamp = db.Column('timestamp', db.DateTime, primary_key = True)
+#     rods = db.Column('rods', db.String, nullable=False)
+#     board_id = db.Column('board_id', db.Integer, db.ForeignKey('board.id'), primary_key = True)
 
 class Activity (db.Model):
     __tablename__ = "activity"
     id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
     type_id = db.Column('type_id', db.Integer, db.ForeignKey('activity_type.id'))
     started = db.Column('started', db.DateTime)
+    paused = db.Column('paused', db.Boolean, default=False)
+    elapsed = db.Column('elapsed', db.Interval, default=datetime.timedelta(seconds=0,minutes=0,hours=0))
     ended = db.Column('ended', db.DateTime)
     classroom_id = db.Column('classroom_id', db.Integer, db.ForeignKey('classroom.id'))
 
-    events = db.relationship('Event', order_by='Event.timestamp', backref='activity')
+    events = db.relationship('Event', order_by='asc(Event.timestamp)', backref='activity')
 
 class ActivityType (db.Model):
     id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)
@@ -81,7 +84,7 @@ class ActivityType (db.Model):
     target = db.Column(db.Integer)
     solution_max_size = db.Column(db.Integer)
 
-    activities = db.relationship('Activity', backref='type')
+    activities = db.relationship('Activity', backref='type', order_by='asc(Activity.started)')
 
 class Event (db.Model):
     __tablename__ = "event"

@@ -46,22 +46,9 @@
   </div>
 </div>
 {% endblock %} {% block scripts %} {{ super() }}
+<script src="{{ url_for('site.script', filename='exercises.js') }}"></script>
 <script src="{{ url_for('static', filename='js/bootstrap-spinner.min.js') }}"></script>
 <script>
   $('.spinner').spinner();
-
-  function startNumberbonds() {
-    var targetnb = parseInt($('.btn-circle.active').text(), 10);
-    console.log(targetnb);
-    var solmaxsize = parseInt($('#spinner').val(), 10);
-    console.log(solmaxsize);
-  }
-
-  // $(document).ready(function() {
-  //
-  //   // Enable bootstrap spinner
-  //
-  //
-  // });
 </script>
 {% endblock %}

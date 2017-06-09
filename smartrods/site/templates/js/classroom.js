@@ -37,7 +37,7 @@ function updateClassroom() {
            },
            error: function (error) {
              $('.classroom-player-status').each( function () {
-               $(this)[0].textContent = "DISCONNECTED";
+               $(this)[0].textContent = "OFFLINE";
                $(this).removeClass('label-success').addClass('label-danger');
              });
              console.log(error);
@@ -78,10 +78,10 @@ function updateClassroom() {
       tempClassroom = data;
       respondCanvas();
 
-    })
-    .always(function() {
-      setTimeout(updateClassroom, 5000);
     });
+    // .always(function() {
+    //   setTimeout(updateClassroom, 5000);
+    // });
 }
 
 // function pollBoard(board_id) {

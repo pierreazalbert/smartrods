@@ -158,14 +158,14 @@ def processData(new_data, old_data, activity, old_stats):
         stats["actions_count"] += actions_count
         actions = text
 
-    # check results and calculate statistics only if an activity is running
-    if (activity.id != 0):
+    # check results and calculate statistics only if there is an activity and it is not paused
+    if (activity.type.id != 0 and activity.paused == False):
 
         # get results based on exercise type
-        if (activity.name == "Number Bonds"):
-            [text, success_count] = checkNumberBonds(new_data, activity.target, activity.solution_max_size, stats["solutions_found"])
+        if (activity.type.name == "Number Bonds"):
+            [text, success_count] = checkNumberBonds(new_data, activity.type.target, activity.type.solution_max_size, stats["solutions_found"])
             stats["success_count"] += success_count
-            success_max_count = calculateSolutionNumber(activity.target, activity.solution_max_size)
+            success_max_count = calculateSolutionNumber(activity.type.target, activity.type.solution_max_size)
 
         # calculate statistics based on results obtained
         stats["progression"] = int(stats["success_count"] / success_max_count * 100)

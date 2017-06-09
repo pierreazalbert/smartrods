@@ -1,43 +1,17 @@
-var clockTimer;
-
 $(document).on('click', '.classroom-player-start', function () {
   window.location = "{{ url_for('site.exercises') }}";
 });
 
 $(document).on('click', '.classroom-player-pause', function () {
-  console.log('clicked on pause');
-  $('.classroom-player-pause').each( function () {
-    $(this).removeClass('glyphicon-pause').addClass('glyphicon-play');
-    $(this).removeClass('classroom-player-pause').addClass('classroom-player-play');
-  });
-  clearInterval(clockTimer);
+  pauseActivity(activity_id);
 });
 
 $(document).on('click', '.classroom-player-play', function () {
-  console.log('clicked on play');
-  $('.classroom-player-play').each( function () {
-    $(this).removeClass('glyphicon-play').addClass('glyphicon-pause');
-    $(this).removeClass('classroom-player-play').addClass('classroom-player-pause');
-  });
-  clockTimer = setInterval(updateClock, 1000);
+  resumeActivity(activity_id);
 });
 
 $(document).on('click', '.classroom-player-stop', function () {
-  console.log('clicked on stop');
-  $('.classroom-player-stop').each( function () {
-    $(this).addClass('hidden');
-  });
-  $('.classroom-player-time').each( function () {
-    $(this).addClass('hidden');
-  });
-  $('.classroom-player-play').each( function () {
-    $(this).removeClass('classroom-player-play').addClass('classroom-player-start');
-  });
-  $('.classroom-player-pause').each( function () {
-    $(this).removeClass('glyphicon-pause').addClass('glyphicon-play');
-    $(this).removeClass('classroom-player-pause').addClass('classroom-player-start');
-  });
-  clearInterval(clockTimer);
+  endActivity(activity_id);
 });
 
 function updateClock () {
@@ -64,7 +38,7 @@ function updateClock () {
   });
 }
 
-function updatePlayer () {
+function updatePlayer() {
   $.ajax({
            type: "GET",
            url: "/api/classrooms/{{current_user.classroom_id}}/activities",
@@ -73,18 +47,138 @@ function updatePlayer () {
            dataType: "json",
            //username: 'smartrods',
            //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
-           success: function (result) {/*console.log(result);*/},
+           success: function (result) { console.log(result); },
            error: function (error) { console.log(error); }
   })
     .done(function(data) {
 
       $('.classroom-player-activity').each( function () {
           $(this)[0].textContent = data['activity_name'];
-          console.log(data['activity_name']);
+          activity_id = data['activity_id'];
+          activity_started = data['started'];
+          activity_elapsed = data['elapsed'];
+          solution_max_size = data['solution_max_size'];
       });
-      if (parseInt(data['activity_type'], 10) == 0) {
-
+      if (parseInt(data['activity_type'], 10) > 0) {
+        if(data['paused'] == true) {
+          console.log('here');
+          $('.classroom-player-pause').each( function () {
+            $(this).removeClass('glyphicon-pause').addClass('glyphicon-play');
+            $(this).removeClass('classroom-player-pause').addClass('classroom-player-play');
+          });
+          $('.classroom-player-time').each( function () {
+            $(this)[0].textContent = String(activity_elapsed);
+          });
+        }
+        else {
+          startActivity();
+        }
+        // add popover to specify solution max size and activity started
       }
 
     });
+}
+
+function startActivity() {
+
+  console.log('started activity');
+
+  $('.classroom-player-start').each( function () {
+    $(this).removeClass('glyphicon-play').addClass('glyphicon-pause');
+    $(this).removeClass('classroom-player-start').addClass('classroom-player-pause');
+  });
+  $('.classroom-player-stop').each( function () {
+    $(this).removeClass('hidden');
+  });
+  $('.classroom-player-time').each( function () {
+    $(this).removeClass('hidden');
+  });
+
+  $('.classroom-player-time').each( function () {
+    $(this)[0].textContent = "00:00:00";
+  });
+
+  clockTimer = setInterval(updateClock, 1000);
+}
+
+function pauseActivity(activity_id) {
+  $.ajax({
+           type: "PUT",
+           url: "/api/classrooms/{{current_user.classroom_id}}/activities",
+           data: '{"action":"pause", "activity_id":' + activity_id + ', "elapsed":"' + String($('.classroom-player-time')[0].textContent) + '"}',
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           //username: 'smartrods',
+           //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+           success: function (result) {
+             console.log(result);
+           },
+           error: function (error) {
+             console.log(error);
+           }
+  });
+  console.log('clicked on pause');
+  $('.classroom-player-pause').each( function () {
+    $(this).removeClass('glyphicon-pause').addClass('glyphicon-play');
+    $(this).removeClass('classroom-player-pause').addClass('classroom-player-play');
+  });
+  clearInterval(clockTimer);
+}
+
+function resumeActivity(activity_id) {
+  $.ajax({
+           type: "PUT",
+           url: "/api/classrooms/{{current_user.classroom_id}}/activities",
+           data: '{"action":"resume", "activity_id":' + activity_id + '}',
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           //username: 'smartrods',
+           //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+           success: function (result) {
+             console.log(result);
+           },
+           error: function (error) {
+             console.log(error);
+           }
+  });
+  console.log('clicked on play');
+  $('.classroom-player-play').each( function () {
+    $(this).removeClass('glyphicon-play').addClass('glyphicon-pause');
+    $(this).removeClass('classroom-player-play').addClass('classroom-player-pause');
+  });
+  clockTimer = setInterval(updateClock, 1000);
+}
+
+function endActivity(activity_id) {
+  $.ajax({
+           type: "PUT",
+           url: "/api/classrooms/{{current_user.classroom_id}}/activities",
+           data: '{"action":"stop", "activity_id":' + activity_id + ', "elapsed":"' + String($('.classroom-player-time')[0].textContent) + '"}',
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           //username: 'smartrods',
+           //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+           success: function (result) {
+             console.log(result);
+           },
+           error: function (error) {
+             console.log(error);
+           }
+  });
+  console.log('clicked on stop');
+  $('.classroom-player-stop').each( function () {
+    $(this).addClass('hidden');
+  });
+  $('.classroom-player-time').each( function () {
+    $(this).addClass('hidden');
+  });
+  $('.classroom-player-play').each( function () {
+    $(this).removeClass('classroom-player-play').addClass('classroom-player-start');
+  });
+  $('.classroom-player-pause').each( function () {
+    $(this).removeClass('glyphicon-pause').addClass('glyphicon-play');
+    $(this).removeClass('classroom-player-pause').addClass('classroom-player-start');
+  });
+  clearInterval(clockTimer);
+  updatePlayer();
 }

@@ -87,10 +87,8 @@
 <script>
 
 var tempClassroom = null;
-
-$(window).bind("beforeunload",function(event) {
-    return "Custom message";
-});
+var activity_id = 0;
+var clockTimer;
 
 $(document).ready(function() {
 
@@ -102,10 +100,21 @@ $(document).ready(function() {
     $(this).removeClass('label-success').addClass('label-default');
   });
 
-  // Synchronise classroom data (boards, stats, player)
+  // Update boards and stats data
+  var classroomTimer = setInterval(updateClassroom, 3000);
   updateClassroom();
 
+  // Update player data
+  updatePlayer();
+
   $(window).resize(respondCanvas);
+
+  $(window).on("beforeunload", function(event) {
+    console.log('pausing activity due to page refresh/close');
+    pauseActivity();
+    return "If you leave this page, the current activity will terminate";
+    event.preventDefautlt();
+  });
 
 });
 </script>
