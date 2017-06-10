@@ -109,12 +109,16 @@ $(document).ready(function() {
 
   $(window).resize(respondCanvas);
 
-  $(window).on("beforeunload", function(event) {
+  window.onbeforeunload = function() {
     console.log('pausing activity due to page refresh/close');
-    pauseActivity();
-    return "If you leave this page, the current activity will terminate";
-    event.preventDefautlt();
-  });
+    pauseActivity(activity_id);
+    return 'message';
+  }
+
+  // $(window).on("beforeunload", function(event) {
+  //   console.log('pausing activity due to page refresh/close');
+  //   pauseActivity(activity_id);
+  // });
 
 });
 </script>

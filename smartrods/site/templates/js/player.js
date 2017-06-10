@@ -61,14 +61,7 @@ function updatePlayer() {
       });
       if (parseInt(data['activity_type'], 10) > 0) {
         if(data['paused'] == true) {
-          console.log('here');
-          $('.classroom-player-pause').each( function () {
-            $(this).removeClass('glyphicon-pause').addClass('glyphicon-play');
-            $(this).removeClass('classroom-player-pause').addClass('classroom-player-play');
-          });
-          $('.classroom-player-time').each( function () {
-            $(this)[0].textContent = String(activity_elapsed);
-          });
+          restartActivity(activity_elapsed);
         }
         else {
           startActivity();
@@ -101,6 +94,26 @@ function startActivity() {
   clockTimer = setInterval(updateClock, 1000);
 }
 
+function restartActivity(activity_elapsed) {
+
+  console.log('restarted activity');
+
+  $('.classroom-player-start').each( function () {
+    $(this).removeClass('glyphicon-start').addClass('glyphicon-play');
+    $(this).removeClass('classroom-player-start').addClass('classroom-player-play');
+  });
+  $('.classroom-player-time').each( function () {
+    $(this)[0].textContent = String(activity_elapsed);
+  });
+  $('.classroom-player-time').each( function () {
+    $(this).removeClass('hidden');
+  });
+  $('.classroom-player-stop').each( function () {
+    $(this).removeClass('hidden');
+  });
+
+}
+
 function pauseActivity(activity_id) {
   $.ajax({
            type: "PUT",
@@ -117,11 +130,12 @@ function pauseActivity(activity_id) {
              console.log(error);
            }
   });
-  console.log('clicked on pause');
+  console.log('paused activity');
   $('.classroom-player-pause').each( function () {
     $(this).removeClass('glyphicon-pause').addClass('glyphicon-play');
     $(this).removeClass('classroom-player-pause').addClass('classroom-player-play');
   });
+
   clearInterval(clockTimer);
 }
 
@@ -141,7 +155,7 @@ function resumeActivity(activity_id) {
              console.log(error);
            }
   });
-  console.log('clicked on play');
+  console.log('resumed activity');
   $('.classroom-player-play').each( function () {
     $(this).removeClass('glyphicon-play').addClass('glyphicon-pause');
     $(this).removeClass('classroom-player-play').addClass('classroom-player-pause');
@@ -165,7 +179,25 @@ function endActivity(activity_id) {
              console.log(error);
            }
   });
-  console.log('clicked on stop');
+
+  $.ajax({
+           type: "POST",
+           url: "/api/classrooms/{{current_user.classroom_id}}/activities",
+           data: '{"action":"start", "activity_type":0}',
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           //username: 'smartrods',
+           //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+           success: function (result) {
+             console.log(result);
+           },
+           error: function (error) {
+             console.log(error);
+           }
+  });
+
+  console.log('stopped activity');
+
   $('.classroom-player-stop').each( function () {
     $(this).addClass('hidden');
   });

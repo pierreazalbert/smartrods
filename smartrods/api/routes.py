@@ -60,28 +60,22 @@ class ActivityAPI(Resource):
         classroom = Classroom.query.get(id) #check existence instead of loading object?
         if classroom is None:
             return {'error': 'There is no classroom with the requested ID'}, 404
-        if classroom.activities == []:
-            return {'activity_id':0,
-                    'activity_type':0,
-                    'activity_name':'No activity',
-                    'started':datetime.datetime.now().strftime('%b %-d %y %H:%M:%S'),
-                    'paused':False}, 200;
+
+        activity = classroom.activities[-1]
+        if activity.type.id == 0:
+            activityname = activity.type.name
         else:
-            activity = classroom.activities[-1]
-            if activity.type.id == 0:
-                activityname = activity.type.name
-            else:
-                activityname = activity.type.name + " to " + str(activity.type.target)
-            elapsed = str(activity.elapsed)
-            if len(elapsed) == 7:
-                elapsed = '0' + elapsed
-            return {'activity_id':activity.id,
-                    'activity_type':activity.type.id,
-                    'activity_name':activityname,
-                    'started':str(activity.started),
-                    'paused':activity.paused,
-                    'elapsed':elapsed,
-                    'solution_max_size':activity.type.solution_max_size}, 200;
+            activityname = activity.type.name + " to " + str(activity.type.target)
+        elapsed = str(activity.elapsed)
+        if len(elapsed) == 7:
+            elapsed = '0' + elapsed
+        return {'activity_id':activity.id,
+                'activity_type':activity.type.id,
+                'activity_name':activityname,
+                'started':str(activity.started),
+                'paused':activity.paused,
+                'elapsed':elapsed,
+                'solution_max_size':activity.type.solution_max_size}, 200;
 
     def post(self, id):
         # Check classroom exists
@@ -101,8 +95,13 @@ class ActivityAPI(Resource):
 
         # Determine what to do based on arguments
         if request.json['action'] == 'start':
-            #start acvitiy with given activity type
             now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            #check if an activity is currently running, if yes, terminate it
+            currentactivity = classroom.activities[-1]
+            if currentactivity.ended is None:
+                currentactivity.ended = now
+                currentactivity.paused = False
+            #start acvitiy with given activity type
             newactivity = Activity(started=now, classroom_id=id, type_id=request.json['activity_type'])
             db.session.add(newactivity)
             activity_type = ActivityType.query.get(request.json['activity_type'])
