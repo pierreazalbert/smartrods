@@ -505,3 +505,9 @@ tbody {
   font-size: 180%;
   box-shadow: none;
 }
+
+.glyphicon.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity:0.2;
+}

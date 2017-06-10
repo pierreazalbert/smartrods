@@ -6,20 +6,6 @@ var canvasDiv = $('<canvas>').attr('width', '200').attr('height', '200');
 var nameDiv = $('<span>').attr('class', 'board-username').attr('style', 'text-align:left');
 var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').attr('onclick', '""').append(canvasDiv, nameDiv, overlayDiv);
 
-var colours = [
-    "#E1E1E1", // 0 - empty
-    "#FFFFFF", // 1 - white
-    "#D0011B", // 2 - red
-    "#7ED321", // 3 - light green
-    "#BD0FE1", // 4 - purple
-    "#F7E500", // 5 - yellow
-    "#417505", // 6 - dark green
-    "#4A4A4A", // 7 - black
-    "#8B572A", // 8 - brown
-    "#4990E2", // 9 - blue
-    "#F6A623" // 10 - orange
-  ];
-
 function updateClassroom() {
   $.ajax({
            type: "GET",
@@ -34,12 +20,37 @@ function updateClassroom() {
                $(this)[0].textContent = "LIVE";
                $(this).removeClass('label-danger').removeClass('label-info').addClass('label-success');
              });
+             $('.classroom-player-start').each( function () {
+               $(this).removeClass('disabled');
+             });
+             $('.classroom-player-pause').each( function () {
+               $(this).removeClass('disabled');
+             });
+             $('.classroom-player-play').each( function () {
+               $(this).removeClass('disabled');
+             });
+             $('.classroom-player-stop').each( function () {
+               $(this).removeClass('disabled');
+             });
            },
            error: function (error) {
              $('.classroom-player-status').each( function () {
                $(this)[0].textContent = "OFFLINE";
                $(this).removeClass('label-success').addClass('label-danger');
              });
+             $('.classroom-player-start').each( function () {
+               $(this).addClass('disabled');
+             });
+             $('.classroom-player-pause').each( function () {
+               $(this).addClass('disabled');
+             });
+             $('.classroom-player-play').each( function () {
+               $(this).addClass('disabled');
+             });
+             $('.classroom-player-stop').each( function () {
+               $(this).addClass('disabled');
+             });
+
              console.log(error);
            }
   })

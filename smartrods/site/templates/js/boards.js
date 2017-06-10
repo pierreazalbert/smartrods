@@ -62,6 +62,7 @@ function createBoard(data) {
   // Create new div
   var board = $(boardDiv).clone();
   var canvas = $(board).find('canvas');
+  console.log(canvas);
   // Give div the id of the board and insert user name
   canvas.attr('id', String('board_' + data.id));
   $(board).find('.board-username').text(data.user);
@@ -85,7 +86,9 @@ function updateBoard(data) {
 
   // In case board is open in enlarge modal, update as well
   var enlargeCanvas = $(String('board_' + data.id + '_enlarge'));
-  drawBoard(enlargeCanvas, data.id, data.rods);
+  if ($('.enlarge-player-pause').length) {
+    drawBoard(enlargeCanvas, data.id, data.rods);
+  }
 }
 
 function respondCanvas() {
@@ -102,3 +105,17 @@ function respondCanvas() {
     drawBoard(this, id, data[0].events.slice(-1)[0].rods);
   });
 }
+
+var colours = [
+    "#E1E1E1", // 0 - empty
+    "#FFFFFF", // 1 - white
+    "#D0011B", // 2 - red
+    "#7ED321", // 3 - light green
+    "#BD0FE1", // 4 - purple
+    "#F7E500", // 5 - yellow
+    "#417505", // 6 - dark green
+    "#4A4A4A", // 7 - black
+    "#8B572A", // 8 - brown
+    "#4990E2", // 9 - blue
+    "#F6A623" // 10 - orange
+  ];

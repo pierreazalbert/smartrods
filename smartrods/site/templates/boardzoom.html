@@ -1,52 +1,47 @@
-{% extends "newbase.html" %}
-
-{% block title %}
-  {{ super() }}
-  Smartrods - Board zoom
-{% endblock %}
-
-{% block head %}
-{{super()}}
+{% extends "newbase.html" %} {% block title %} {{ super() }} Smartrods - Board zoom {% endblock %} {% block head %} {{super()}}
 <link href="{{ url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet">
-{% endblock %}
+<link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet"> {% endblock %} {% block body %}
 
-{% block body %}
 <body style="background-color:#4A4A4A">
   <div class="container enlarge-screen">
     <canvas width="1000" height="1000" id="board_{{ board_id }}" style="max-height:100%; max-width:100%; margin-left:auto; margin-right:auto"></canvas>
     <div class="row" style="display:flex; align-items:center; background-color:white; padding-top:10px; padding-bottom:10px; border-radius:5px;">
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-        <h4 class="modal-title" id="enlarge-user" style="text-align:left; padding-left:10%;">User Name</h4>
+        <h4 class="modal-title" id="enlarge-username" style="text-align:left; padding-left:10%;">User Name</h4>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center">
-        <span class="glyphicon glyphicon-step-backward" aria-hidden="true" style="color:#4A4A4A; font-size:150%;"></span>
-        <span class="glyphicon glyphicon-pause" aria-hidden="true" style="color:#4A4A4A; font-size:150%; padding-left:5%; padding-right:3%"></span>
-        <span class="glyphicon glyphicon-step-forward" aria-hidden="true" style="color:#4A4A4A; font-size:150%;"></span>
+        <!-- <span class="glyphicon glyphicon-step-backward" aria-hidden="true" style="color:#4A4A4A; font-size:150%;"></span> -->
+        <span class="glyphicon glyphicon-pause enlarge-player-pause" aria-hidden="true" style="color:#4A4A4A; font-size:150%; padding-left:5%; padding-right:3%"></span>
+        <!-- <span class="glyphicon glyphicon-step-forward" aria-hidden="true" style="color:#4A4A4A; font-size:150%;"></span> -->
       </div>
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align:right; padding-right:5%">
-        <span class="label label-success play-status" style="">LIVE</span>
+        <span class="label label-success enlarge-player-status" style="">IDLE</span>
       </div>
     </div>
   </div>
 
-  {% block scripts %}
-  {{ super() }}
-  <script src="{{ url_for('site.script', filename='classroom.js') }}"></script>
+  {% block scripts %} {{ super() }}
+  <script src="{{ url_for('site.script', filename='boardzoom.js') }}"></script>
   <script src="{{ url_for('site.script', filename='boards.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jcanvas.min.js') }}"></script>
   <script>
+    var tempEnlarge = null;
+    var enlargeTimer;
+    var board_id = {{board_id}};
 
-  var boardTemp = null;
-  var pollBoardTimer;
+    $(document).ready(function() {
 
-  $(document).ready(function() {
+      $('.enlarge-player-status').each(function() {
+        $(this)[0].textContent = "IDLE";
+        $(this).removeClass('label-success').addClass('label-default');
+      });
+      // Update boards and stats data
+      enlargeTimer = setInterval(updateEnlarge(board_id), 3000);
+      updateEnlarge(board_id);
 
-    pollBoard({{board_id}});
+      $(window).resize(respondEnlargeCanvas);
 
-    //$(window).resize(respondCanvas);
-
-  });
+    });
   </script>
   {% endblock %}
 

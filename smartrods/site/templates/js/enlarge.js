@@ -6,37 +6,39 @@ $(document).on('click', '.open-zoom', function (event) {
   var zoom = window.open("/boardzoom/" + id);
 });
 
+$(document).on('click', '.enlarge-player-pause', function () {
+  var button = $(event.target);
+  console.log('paused zoom update');
+  button.removeClass('glyphicon-pause').addClass('glyphicon-play');
+  button.removeClass('enlarge-player-pause').addClass('enlarge-player-play');
+  $('.enlarge-player-previous').removeClass('disabled');
+  $('.enlarge-player-next').removeClass('disabled');
+});
+
 $(document).on('click', '.enlarge-player-play', function () {
   var button = $(event.target);
   var board_id = parseInt($(button).parent().parent().parent().find('canvas').attr('id').split('_')[1], 10);
-  // RESUME UPDATE OF MODAL BOARD
   console.log('resumed zoom update');
   button.removeClass('glyphicon-play').addClass('glyphicon-pause');
-  $('.play-status').removeClass('label-default').addClass('label-success').text('LIVE');
-});
-
-$(document).on('click', '.enlarge-player-pause', function () {
-  var button = $(event.target);
-  // PAUSE UPDATES OF MODAL BOARD
-  console.log('paused zoom update');
-  button.removeClass('glyphicon-pause').addClass('glyphicon-play');
-  $('.play-status').removeClass('label-success').addClass('label-default').text('PAUSED');
+  button.removeClass('enlarge-player-play').addClass('enlarge-player-pause');
+  $('.enlarge-player-previous').addClass('disabled');
+  $('.enlarge-player-next').addClass('disabled');
 });
 
 $(document).on('click', '.enlarge-player-previous', function () {
   var button = $(event.target);
-  // PAUSE UPDATES OF MODAL BOARD
   console.log('zoom previous action');
-  button.removeClass('glyphicon-pause').addClass('glyphicon-play');
-  $('.play-status').removeClass('label-success').addClass('label-default').text('PAUSED');
+
+
+  drawBoard(enlargeCanvas, data.id, data.rods);
 });
 
 $(document).on('click', '.enlarge-player-next', function () {
   var button = $(event.target);
-  // PAUSE UPDATES OF MODAL BOARD
   console.log('zoom next action');
-  button.removeClass('glyphicon-pause').addClass('glyphicon-play');
-  $('.play-status').removeClass('label-success').addClass('label-default').text('PAUSED');
+
+
+  drawBoard(enlargeCanvas, data.id, data.rods);
 });
 
 $(document).on('click', '.enlarge-btn', function (event) {
