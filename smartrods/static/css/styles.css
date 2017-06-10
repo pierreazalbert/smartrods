@@ -511,3 +511,8 @@ tbody {
     cursor: default;
     opacity:0.2;
 }
+
+svg > text {
+  width: 100%;
+  font-family: 'europa'!important;
+}

@@ -1,3 +1,11 @@
+var enlargeButton = $('<button>').attr('class', 'btn enlarge-btn').attr('data-toggle', 'modal').attr('data-target', '#enlargeModal').text('Enlarge');
+var infoButton = $('<button>').attr('class', 'btn info-btn').attr('style', 'top:50%').attr('data-toggle', 'modal').attr('data-target', '#infoModal').text('More info');
+var overlayDiv = $('<div>').attr('class', 'overlay').append(enlargeButton, infoButton);
+
+var canvasDiv = $('<canvas>').attr('width', '200').attr('height', '200');
+var nameDiv = $('<span>').attr('class', 'board-username').attr('style', 'text-align:left');
+var boardDiv = $('<div>').attr('class', 'col-xs-12 col-sm-4 col-md-3 col-lg-2 tile').attr('onclick', '""').append(canvasDiv, nameDiv, overlayDiv);
+
 function drawBoard(canvas, id, data) {
 
   var canvasSize = canvas.width;
@@ -62,7 +70,6 @@ function createBoard(data) {
   // Create new div
   var board = $(boardDiv).clone();
   var canvas = $(board).find('canvas');
-  console.log(canvas);
   // Give div the id of the board and insert user name
   canvas.attr('id', String('board_' + data.id));
   $(board).find('.board-username').text(data.user);

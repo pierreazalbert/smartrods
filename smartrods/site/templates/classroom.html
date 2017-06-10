@@ -24,8 +24,8 @@
     </div>
     <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 classroom-toggle">
       <div class="btn-group btn-toggle">
-        <button class="btn btn-default toggle-button toggle-boards active" data-toggle="tab" data-target="#allboards">Boards</button>
-        <button class="btn btn-default toggle-button toggle-stats"  data-toggle="tab" data-target="#allstats">Stats</button>
+        <button class="btn btn-default toggle-button toggle-boards active">Boards</button>
+        <button class="btn btn-default toggle-button toggle-stats">Stats</button>
       </div>
     </div>
   </div>
@@ -48,8 +48,8 @@
 
     <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 classroom-toggle">
       <div class="btn-group btn-toggle">
-        <button class="btn btn-default toggle-button toggle-boards active" data-toggle="tab" data-target="#allboards">Boards</button>
-        <button class="btn btn-default toggle-button toggle-stats" data-toggle="tab" data-target="#allstats">Stats</button>
+        <button class="btn btn-default toggle-button toggle-boards active">Boards</button>
+        <button class="btn btn-default toggle-button toggle-stats">Stats</button>
       </div>
     </div>
 
@@ -57,16 +57,34 @@
 
   <br>
   <!-- <h1>Board overview</h1><br> -->
-  <div class="tab-content">
-    <div id="allboards" class="tab-pane fade in active">
-      <div class='row' id='grid'>
-      </div>
-    </div>
-    <div id="allstats" class="tab-pane fade">
-      <div class='row'>
-      </div>
+
+  <div id="allboards">
+    <div class="row" id="grid">
     </div>
   </div>
+
+  <div id="allstats" style="display: none;">
+    <div class="row">
+
+      <div class="col-sm-6 col-md-6 col-lg-3">
+        <div id="progression-donut"></div>
+      </div>
+
+      <div class="col-sm-6 col-md-6 col-lg-3">
+        <div id="accuracy-donut"></div>
+      </div>
+
+      <div class="col-sm-6 col-md-6 col-lg-3">
+        <div id="fluency-donut"></div>
+      </div>
+
+      <div class="col-sm-6 col-md-6 col-lg-3">
+        <div id="systematicity-donut"></div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 <!-- BOARD INFO MODAL -->
@@ -79,11 +97,14 @@
 {% block scripts %}
 {{ super() }}
 <script src="{{ url_for('site.script', filename='classroom.js') }}"></script>
+<script src="{{ url_for('site.script', filename='stats.js') }}"></script>
 <script src="{{ url_for('site.script', filename='boards.js') }}"></script>
 <script src="{{ url_for('site.script', filename='enlarge.js') }}"></script>
 <script src="{{ url_for('site.script', filename='info.js') }}"></script>
 <script src="{{ url_for('site.script', filename='player.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jcanvas.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/raphael.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/morris.min.js') }}"></script>
 <script>
 
 var tempClassroom = null;
@@ -107,6 +128,12 @@ $(document).ready(function() {
   // Update player data
   updatePlayer();
 
+  // Init stats graphs
+  progressionDonut();
+  accuracyDonut();
+  fluencyDonut();
+  systematicityDonut();
+
   $(window).resize(respondCanvas);
 
   window.onbeforeunload = function() {
@@ -115,10 +142,21 @@ $(document).ready(function() {
     return 'message';
   }
 
-  // $(window).on("beforeunload", function(event) {
-  //   console.log('pausing activity due to page refresh/close');
-  //   pauseActivity(activity_id);
-  // });
+  $('.toggle-stats').click( function () {
+    console.log('loading stats');
+    $('#allboards').hide(200);
+    $("#allstats").show(200, function () {
+      window.progressionDonut.redraw();
+      window.accuracyDonut.redraw();
+      window.fluencyDonut.redraw();
+      window.systematicityDonut.redraw();
+    });
+  });
+  $('.toggle-boards').click( function () {
+    console.log('loading boards');
+    $("#allstats").hide(200);
+    $('#allboards').show(200, respondCanvas);
+  });
 
 });
 </script>
