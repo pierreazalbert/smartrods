@@ -22,12 +22,17 @@ def script(filename):
 def classroom():
     return render_template('classroom.html')
 
+@mod.route('/exercises')
+@login_required
+def exercises():
+    return render_template('exercises.html')
+
 @mod.route('/boardzoom/<board_id>')
 @login_required
 def enlarge(board_id):
     return render_template('boardzoom.html', board_id=board_id)
 
-@mod.route('/exercises')
+@mod.route('/virtualboard/<board_id>')
 @login_required
-def exercises():
-    return render_template('exercises.html')
+def virtual(board_id):
+    return render_template('virtualboard.html', board_id=board_id)

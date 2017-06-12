@@ -27,16 +27,16 @@ $(document).on('click', '.info-btn', function (event) {
 
   // Update stats using buffered data
   var stats = JSON.parse(last_event.statistics.replace(/'/g, '"'));
-  if(last_event.outcomes == "-") {
+  if(activity_type == 0) {
     modal.find('#stats-progression').text("-");
     modal.find('#stats-accuracy').text("-");
     modal.find('#stats-fluency').text("-");
     modal.find('#stats-systematicity').text("-");
   }
   else {
-    modal.find('#stats-progression').text(stats.progression);
-    modal.find('#stats-accuracy').text(stats.accuracy);
-    modal.find('#stats-fluency').text(stats.fluency);
+    modal.find('#stats-progression').text(stats.progression + ' %');
+    modal.find('#stats-accuracy').text(stats.accuracy + ' %');
+    modal.find('#stats-fluency').text(stats.fluency + ' sec');
     modal.find('#stats-systematicity').text(stats.systematicity);
   }
 

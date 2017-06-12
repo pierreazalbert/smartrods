@@ -109,6 +109,7 @@
 
 var tempClassroom = null;
 var activity_id = 0;
+var activity_type = 0;
 var clockTimer;
 
 $(document).ready(function() {
@@ -117,7 +118,7 @@ $(document).ready(function() {
   $('[data-toggle="popover"]').popover();
 
   $('.classroom-player-status').each( function () {
-    $(this)[0].textContent = "IDLE";
+    $(this)[0].textContent = "CONNECTING";
     $(this).removeClass('label-success').addClass('label-default');
   });
 
@@ -144,13 +145,18 @@ $(document).ready(function() {
 
   $('.toggle-stats').click( function () {
     console.log('loading stats');
-    $('#allboards').hide(200);
-    $("#allstats").show(200, function () {
-      window.progressionDonut.redraw();
-      window.accuracyDonut.redraw();
-      window.fluencyDonut.redraw();
-      window.systematicityDonut.redraw();
-    });
+    if(activity_type != 0) {
+      $('#allboards').hide(200);
+      $("#allstats").show(200, function () {
+        window.progressionDonut.redraw();
+        window.accuracyDonut.redraw();
+        window.fluencyDonut.redraw();
+        window.systematicityDonut.redraw();
+      });
+    }
+    else {
+      alert('Statistics are only available when an activity is running. Please start an activity first.');
+    }
   });
   $('.toggle-boards').click( function () {
     console.log('loading boards');

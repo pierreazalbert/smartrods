@@ -47,7 +47,7 @@ function updatePlayer() {
            dataType: "json",
            //username: 'smartrods',
            //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
-           success: function (result) { console.log(result); },
+           success: function (result) { /*console.log(result);*/ },
            error: function (error) { console.log(error); }
   })
     .done(function(data) {
@@ -55,6 +55,7 @@ function updatePlayer() {
       $('.classroom-player-activity').each( function () {
           $(this)[0].textContent = data['activity_name'];
           activity_id = data['activity_id'];
+          activity_type = data['activity_type'];
           activity_started = data['started'];
           activity_elapsed = data['elapsed'];
           solution_max_size = data['solution_max_size'];

@@ -58,7 +58,6 @@ $(document).on('click', '.enlarge-btn', function (event) {
   var data = tempClassroom.filter(function (board) {
     return (board.id === id);
   });
-  console.log(data[0]);
   // Draw canvas using buffered data
   canvas.attr('id', String('board_' + data[0].id + '_enlarge'));
   drawBoard(canvas[0], id, data[0].events.slice(-1)[0].rods);

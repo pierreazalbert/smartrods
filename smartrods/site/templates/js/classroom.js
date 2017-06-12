@@ -49,8 +49,6 @@ function updateClassroom() {
   })
     .done(function(data) {
 
-      // Update player status
-
       // The first time we poll we create everything
       if (tempClassroom === null) {
         for (i in data) {
@@ -66,26 +64,22 @@ function updateClassroom() {
           var last = tempClassroom.filter(function (board) {
             return (board.id === data[i].id);
           });
-
           if (last === null) {
             createBoard(data[i]);
           }
-          else if (data[i].rods != last[0].rods) {
+          else if (data[i].events.slice(-1)[0].rods != last[0].events.slice(-1)[0].rods) {
             updateBoard(data[i]);
           }
           else {
             console.log('no boards to update');
           }
-      }
+        }
       };
 
       tempClassroom = data;
       respondCanvas();
-
+      updateStats();
     });
-    // .always(function() {
-    //   setTimeout(updateClassroom, 5000);
-    // });
 }
 
 // Toggle button between all boards and all stats

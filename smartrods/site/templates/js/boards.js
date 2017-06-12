@@ -84,17 +84,17 @@ function updateBoard(data) {
   console.log('updating contents of board ', data.id);
 
   // Draw board
-  var canvas = $(String('board_' + data.id));
-  drawBoard(canvas, data.id, data.rods);
+  var canvas = $(String('#board_' + data.id));
+  drawBoard(canvas, data.id, data.events.slice(-1)[0].rods);
 
   // In case board is open in info modal, update as well
-  var infoCanvas = $(String('board_' + data.id + '_info'));
-  drawBoard(infoCanvas, data.id, data.rods);
+  var infoCanvas = $(String('#board_' + data.id + '_info'));
+  drawBoard(infoCanvas, data.id, data.events.slice(-1)[0].rods);
 
   // In case board is open in enlarge modal, update as well
-  var enlargeCanvas = $(String('board_' + data.id + '_enlarge'));
+  var enlargeCanvas = $(String('#board_' + data.id + '_enlarge'));
   if ($('.enlarge-player-pause').length) {
-    drawBoard(enlargeCanvas, data.id, data.rods);
+    drawBoard(enlargeCanvas, data.id, data.events.slice(-1)[0].rods);
   }
 }
 
