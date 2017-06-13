@@ -47,7 +47,7 @@ function updatePlayer() {
            dataType: "json",
            //username: 'smartrods',
            //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
-           success: function (result) { /*console.log(result);*/ },
+           success: function (result) { console.log(result); },
            error: function (error) { console.log(error); }
   })
     .done(function(data) {
@@ -61,7 +61,7 @@ function updatePlayer() {
           solution_max_size = data['solution_max_size'];
       });
       if (parseInt(data['activity_type'], 10) > 0) {
-        if(data['paused'] == true) {
+        if(data['elapsed'] != "00:00:00") {
           restartActivity(activity_elapsed);
         }
         else {

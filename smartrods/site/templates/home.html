@@ -1,12 +1,109 @@
-{% extends 'newbase.html' %}
+{% extends "newbase.html" %}
+{% block title %} {{ super() }} Smartrods - Home {% endblock %}
+{% block head %} {{super()}} {% endblock %}
 
-{% block title %}
-{{ super() }}
-Home
+{% block styles %}
+<link href="{{ url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/morris.css')}}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet">
 {% endblock %}
 
-{% block main %}
+{% block body %}
+
+{% block navbar %}
+<nav class="navbar navbar-default">
+ <div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+   <button id='menu-button' type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <div id='brand-logo'>
+          <a class="navbar-brand"  href="{{ url_for('site.home') }}">
+		      <img alt="Brand"  src="{{ url_for('static', filename='img/logo-text.png') }}" height=80%></img>
+		      </a>
+        </div>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="navbar">
+   <ul class="nav navbar-nav">
+    <li ><a id="site-classroom" href="{{ url_for('site.classroom') }}">Classroom</a></li>
+    <li ><a id="site-exercises" href="{{ url_for('site.exercises') }}">Exercises</a></li>
+   </ul>
+   <ul class="nav navbar-nav navbar-right">
+		 {% if current_user.is_authenticated %}
+    <li class="dropdown">
+     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.username|title}} <span class="caret"></span></a>
+     <ul class="dropdown-menu">
+      <li><a id="user-profile" href="{{ url_for('user.profile', username=current_user.username) }}">Profile</a></li>
+      <li role="separator" class="divider"></li>
+      <li><a id="user-logout" href="{{ url_for('user.logout') }}">Log Out</a></li>
+    </ul>
+   </li>
+			{% else %}
+			<li><a id="user-login" href="{{ url_for('user.login') }}">Log In</a></li>
+			{% endif %}
+
+    <li><a id="site-settings" href="" class="glyphicon glyphicon-cog" style="margin-top:-1px"></a></li>
+   </ul>
+  </div>
+  <!-- /.navbar-collapse -->
+ </div>
+ <!-- /.container-fluid -->
+</nav>
+{% endblock %}
+
+<body>
+
   <div class="container">
-  <h1>You are on the homepage</h1>
-</div>
+  {% block flash_messages %}
+      {%- with messages = get_flashed_messages(with_categories=true) -%}
+          {% if messages %}
+              {% for category, message in messages %}
+                  {% if category=='error' %}
+                      {% set category='danger' %}
+                  {% endif %}
+                  <div class="alert alert-{{category}}">
+                    <span><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></span>
+                    {{ message|safe }}
+                  </div>
+
+              {% endfor %}
+          {% endif %}
+      {%- endwith %}
+  {% endblock %}
+  </div>
+
+  <div class="container text-left">
+    <img src="{{ url_for('static', filename='img/rods-blur.png') }}" alt="Smart Rods Logo" style="position:fixed;top:0;left:0;height:100%;z-index:-1">
+    <br>
+    {% if current_user.is_authenticated %}
+    <h1 style="color:white;font-size:300%">Welcome, {{current_user.firstname}}</h1>
+    <br>
+    <h3 style="color:white">Classroom: {{current_user.classroom.name}}</h3>
+    {% if current_user.classroom.activities[-1].type.id > 0 %}
+    <h3 style="color:white">Currently running: {{current_user.classroom.activities[-1].type.name}} to {{current_user.classroom.activities[-1].type.target}}</h3>
+    {% endif %}
+    <br>
+    <a href="{{url_for('site.classroom')}}" class="btn btn-default" style="margin-right:20px">Go To Classroom</a>
+    <a href="{{url_for('site.exercises')}}" class="btn btn-default">Start Activity</a>
+    <br>
+    {% else %}
+    <h1 style="color:white;font-size:500%">Welcome to Smart Rods</h1>
+    <br>
+    <h3 style="color:white">Please login to view your classroom or start an activity</h3>
+    <br>
+    <a href="{{url_for('user.login')}}" class="btn btn-default">Log In</a>
+    {% endif %}
+  </div>
+
+
+</body>
+
+{% block scripts %} {{ super() }} {% endblock %}
+
 {% endblock %}
