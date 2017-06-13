@@ -48,3 +48,40 @@ function startNumberbonds() {
   });
   window.location = "{{ url_for('site.classroom') }}";
 }
+
+// Toggle button between all boards and all stats
+$(document).on('click', '.toggle-button:not(.active)', function () {
+
+    if ($(this).hasClass('toggle-library')){
+
+      $('.toggle-history').each( function () {
+        $(this).removeClass('active');
+      });
+      $('.toggle-library').each( function () {
+        $(this).addClass('active');
+      });
+    }
+    else {
+      $('.toggle-library').each( function () {
+        $(this).removeClass('active');
+      });
+      $('.toggle-history').each( function () {
+        $(this).addClass('active');
+      });
+    }
+
+});
+
+// function loadActivityHistory() {
+//
+//   // Update activity log using buffered data (after clearing table)
+//   var table = modal.find('tbody');
+//   table.empty();
+//   for (i in data[0].events) {
+//     var event = data[0].events[i];
+//     var newrow = $('<tr>').append($('<td>').text(event.timestamp.slice(5,-4)),
+//                                   $('<td>').text(event.actions),
+//                                   $('<td>').text(event.outcomes));
+//     table.append(newrow);
+//   }
+// }
