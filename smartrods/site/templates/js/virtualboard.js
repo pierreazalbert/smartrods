@@ -74,7 +74,9 @@ function drawVirtual(canvas, id, data) {
             layer: true,
             draggable: true,
             data: {
-              'value': value
+              'value': value,
+              'column': column,
+              'row': parseInt(row,10)
             },
             //name: String("rod_" + value),
             groups: ["rods"],
@@ -106,9 +108,11 @@ function drawVirtual(canvas, id, data) {
             },
             dragstop: function(layer) {
               console.log('moved rod', layer.data.value);
-              layer.data.column = layer.x / boardSize * 10;
-              layer.data.row = layer.y / boardSize * 10;
-              updateVirtualArray();
+              layer.data.column = Math.round(layer.x / boardSize * 10);
+              layer.data.row = Math.round(layer.y / boardSize * 10);
+              if (detectOverlap(layer) == false) {
+                updateVirtualArray();
+              }
             }
           });
           column = column + value;
@@ -137,7 +141,7 @@ function respondVirtualCanvas() {
   var size = $('canvas').width();
   $('canvas').attr('width', size);
   $('canvas').attr('height', size);
-  drawVirtual($('canvas')[0], tempVirtual.id, tempVirtual.events.slice(-1)[0].rods);
+  $('canvas').clearCanvas().drawLayers();
 }
 
 function addVirtualRod(value) {
@@ -165,7 +169,6 @@ function addVirtualRod(value) {
     fromCenter: false,
     bringToFront: true,
     drag: function(layer) {
-      var old = {'x':layer.x, 'y':layer.y};
       layer.x = nearest(layer.x, gridSize);
       layer.y = nearest(layer.y, gridSize);
       if (layer.x + layer.width > boardSize) {
@@ -189,8 +192,8 @@ function addVirtualRod(value) {
     },
     dragstop: function(layer) {
       console.log('moved rod', layer.data.value);
-      layer.data.column = layer.x / boardSize * 10;
-      layer.data.row = layer.y / boardSize * 10;
+      layer.data.column = Math.round(layer.x / boardSize * 10);
+      layer.data.row = Math.round(layer.y / boardSize * 10);
       if (detectOverlap(layer) == false) {
         updateVirtualArray();
       }
@@ -264,10 +267,22 @@ function updateVirtualBoard(array) {
            dataType: "json",
            //username: 'smartrods',
            //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
-           success: function (result) {
+           success: function(result) {
              console.log(result);
+             $('.virtual-player-status').each(function() {
+               $(this)[0].textContent = "LIVE";
+               $(this).removeClass('label-danger').removeClass('label-info').addClass('label-success');
+             });
+             $('.virtual-player-play').removeClass('disabled');
+             $('.virtual-player-pause').removeClass('disabled');
            },
-           error: function (error) {
+           error: function(error) {
+             $('.virtual-player-status').each(function() {
+               $(this)[0].textContent = "OFFLINE";
+               $(this).removeClass('label-success').addClass('label-danger');
+             });
+             $('.virtual-player-play').addClass('disabled');
+             $('.virtual-player-pause').addClass('disabled');
              console.log(error);
            }
   });

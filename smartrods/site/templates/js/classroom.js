@@ -59,7 +59,6 @@ function updateClassroom() {
       else {
         // Check if some of the boards have changed
         for (i in data) {
-          console.log(data[i].events);
           // Check if board exists in previous data received
           var last = tempClassroom.filter(function (board) {
             return (board.id === data[i].id);
@@ -85,22 +84,24 @@ function updateClassroom() {
 // Toggle button between all boards and all stats
 $(document).on('click', '.toggle-button:not(.active)', function () {
 
-  if ($(this).hasClass('toggle-stats')){
+  if (activity_type !=0) {
+    if ($(this).hasClass('toggle-stats')){
 
-    $('.toggle-button').each( function () {
-      $(this).removeClass('active');
-    });
-    $('.toggle-stats').each( function () {
-      $(this).addClass('active');
-    });
-  }
-  else {
-    $('.toggle-button').each( function () {
-      $(this).removeClass('active');
-    });
-    $('.toggle-boards').each( function () {
-      $(this).addClass('active');
-    });
+      $('.toggle-boards').each( function () {
+        $(this).removeClass('active');
+      });
+      $('.toggle-stats').each( function () {
+        $(this).addClass('active');
+      });
+    }
+    else {
+      $('.toggle-stats').each( function () {
+        $(this).removeClass('active');
+      });
+      $('.toggle-boards').each( function () {
+        $(this).addClass('active');
+      });
+    }
   }
 
 });

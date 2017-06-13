@@ -7,12 +7,12 @@
     <h1 style="color:white;text-align:center;margin-bottom:30px;margin-top:30px;">Virtual Smart Board</h1>
 
     <div class="row text-center">
-      <div class="col-sm-12 col-md-6 col-lg-6 col-md-offset-1 col-lg-offset-1">
-        <canvas width="600" height="600" id="board_{{ board_id }}" style="padding-top:0;padding-bottom:0;border-radius:10px"></canvas>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-sm-offset-1 col-md-offset-1 col-lg-offset-1" style="background-color:#E1E1E1;border-bottom: 15px solid #E1E1E1;border-top: 15px solid #E1E1E1;border-radius:20px">
+        <canvas width="600" height="600" id="board_{{ board_id }}" style="padding-top:0;padding-bottom:0;border-radius:10px; margin:auto"></canvas>
 
 
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-4 text-left">
+      <div class="col-xs-9 col-sm-4 col-md-4 col-lg-4 text-left" >
 
         <button class="btn btn-default" style="background-color:#F6A623;width:300px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(10);"></button><br>
         <button class="btn btn-default" style="background-color:#4990E2;width:270px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(9);"></button><br>
@@ -36,7 +36,7 @@
         <h4 id="virtual-info" style="color:#D0011B"></h4>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align:right; padding-right:5%">
-        <span class="label label-success virtual-player-status" style="">IDLE</span>
+        <span class="label label-info virtual-player-status" style="">CONNECTING</span>
       </div>
     </div>
   </div>
