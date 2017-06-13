@@ -57,7 +57,7 @@
 </nav>
 {% endblock %}
 
-<body>
+<body style="background-image:url({{ url_for('static', filename='img/rods-blur.png') }});background-size: 200% 400%;">
 
   <div class="container">
   {% block flash_messages %}
@@ -79,7 +79,6 @@
   </div>
 
   <div class="container text-left">
-    <img src="{{ url_for('static', filename='img/rods-blur.png') }}" alt="Smart Rods Logo" style="position:fixed;top:0;left:0;height:100%;z-index:-1">
     <br>
     {% if current_user.is_authenticated %}
     <h1 style="color:white;font-size:300%">Welcome, {{current_user.firstname}}</h1>
