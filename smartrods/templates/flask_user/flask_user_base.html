@@ -10,3 +10,10 @@
     </div>
 </div>
 {% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+$('body').attr('style', "background-image:url({{ url_for('static', filename='img/rods-blur.png') }});background-size: 200% 400%;");
+</script>
+{% endblock %}

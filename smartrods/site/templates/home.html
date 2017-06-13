@@ -83,14 +83,17 @@
     {% if current_user.is_authenticated %}
     <h1 style="color:white;font-size:300%">Welcome, {{current_user.firstname}}</h1>
     <br>
-    <h3 style="color:white">Classroom: {{current_user.classroom.name}}</h3>
+    <h3 style="color:white; display:inline; margin-right:20px; vertical-align:middle">Classroom: {{current_user.classroom.name}}</h3>
+    <a href="{{url_for('site.classroom')}}" class="btn btn-default" style="margin-right:20px;display:inline">Go To Classroom</a><br><br>
+    <h3 style="color:white; display:inline; margin-right:20px; vertical-align:middle">Board ID: {{current_user.board.id}}</h3>
+    <a onclick='window.open("{{url_for('site.virtual', board_id=current_user.board.id)}}")' class="btn btn-default" style="display:inline">Virtual Board</a><br><br>
     {% if current_user.classroom.activities[-1].type.id > 0 %}
-    <h3 style="color:white">Currently running: {{current_user.classroom.activities[-1].type.name}} to {{current_user.classroom.activities[-1].type.target}}</h3>
+    <h3 style="color:white; display:inline; margin-right:20px; vertical-align:middle">Currently running: {{current_user.classroom.activities[-1].type.name}} to {{current_user.classroom.activities[-1].type.target}}</h3>
+    <a href="{{url_for('site.classroom')}}" class="btn btn-default" style="display:inline">See Activity</a>
+    {% else %}
+    <h3 style="color:white; display:inline; margin-right:20px; vertical-align:middle">No activity running</h3>
+    <a href="{{url_for('site.exercises')}}" class="btn btn-default" style="display:inline">Start Activity</a>
     {% endif %}
-    <br>
-    <a href="{{url_for('site.classroom')}}" class="btn btn-default" style="margin-right:20px">Go To Classroom</a>
-    <a href="{{url_for('site.exercises')}}" class="btn btn-default">Start Activity</a>
-    <br>
     {% else %}
     <h1 style="color:white;font-size:500%">Welcome to Smart Rods</h1>
     <br>

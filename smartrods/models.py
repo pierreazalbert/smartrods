@@ -60,12 +60,6 @@ class Board (db.Model):
 
     events = db.relationship('Event', order_by='asc(Event.timestamp)', backref='board')
 
-# class Rods (db.Model):
-#     __tablename__ = "rods"
-#     timestamp = db.Column('timestamp', db.DateTime, primary_key = True)
-#     rods = db.Column('rods', db.String, nullable=False)
-#     board_id = db.Column('board_id', db.Integer, db.ForeignKey('board.id'), primary_key = True)
-
 class Activity (db.Model):
     __tablename__ = "activity"
     id = db.Column('id', db.Integer, autoincrement=True, primary_key = True)

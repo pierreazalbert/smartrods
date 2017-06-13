@@ -2,17 +2,38 @@
 <link href="{{ url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet"> {% endblock %} {% block body %}
 
-<body style="background-color:#4A4A4A">
-  <div class="container enlarge-screen">
-    <canvas width="1000" height="1000" id="board_{{ board_id }}" style="max-height:100%; max-width:100%; margin-left:auto; margin-right:auto"></canvas>
-    <div class="row" style="display:flex; align-items:center; background-color:white; padding-top:10px; padding-bottom:10px; border-radius:5px;">
+<body style="background-image:url({{ url_for('static', filename='img/rods-blur.png') }});background-size: 200% 400%;">
+  <div class="container text-center">
+    <h1 style="color:white;text-align:center;margin-bottom:30px;margin-top:30px;">Virtual Smart Board</h1>
+
+    <div class="row text-center">
+      <div class="col-sm-12 col-md-6 col-lg-6 col-md-offset-1 col-lg-offset-1">
+        <canvas width="600" height="600" id="board_{{ board_id }}" style="padding-top:0;padding-bottom:0;border-radius:10px"></canvas>
+
+
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4 text-left">
+
+        <button class="btn btn-default" style="background-color:#F6A623;width:300px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(10);"></button><br>
+        <button class="btn btn-default" style="background-color:#4990E2;width:270px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(9);"></button><br>
+        <button class="btn btn-default" style="background-color:#8B572A;width:240px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(8);"></button><br>
+        <button class="btn btn-default" style="background-color:#4A4A4A;width:210px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(7);"></button><br>
+        <button class="btn btn-default" style="background-color:#417505;width:180px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(6);"></button><br>
+        <button class="btn btn-default" style="background-color:#F7E500;width:150px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(5);"></button><br>
+        <button class="btn btn-default" style="background-color:#BD0FE1;width:120px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(4);"></button><br>
+        <button class="btn btn-default" style="background-color:#7ED321;width:90px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(3);"></button><br>
+        <button class="btn btn-default" style="background-color:#D0011B;width:60px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(2);"></button><br>
+        <button class="btn btn-default" style="background-color:#FFFFFF;width:30px;height:30px;margin-bottom:-10px" onclick="addVirtualRod(1);"></button><br>
+        <button class="btn btn-default" onclick="clearBoard();">CLEAR BOARD</button>
+
+      </div>
+    </div>
+    <div class="row" style="display:flex; align-items:center; background-color:white; margin-top:30px; padding-top:10px; padding-bottom:10px; border-radius:5px;">
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
         <h4 class="modal-title" id="virtual-username" style="text-align:left; padding-left:10%;">User Name</h4>
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center">
-        <!-- <span class="glyphicon glyphicon-step-backward" aria-hidden="true" style="color:#4A4A4A; font-size:150%;"></span> -->
-        <!-- <span class="glyphicon glyphicon-pause enlarge-player-pause" aria-hidden="true" style="color:#4A4A4A; font-size:150%; padding-left:5%; padding-right:3%"></span> -->
-        <!-- <span class="glyphicon glyphicon-step-forward" aria-hidden="true" style="color:#4A4A4A; font-size:150%;"></span> -->
+      <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 text-center">
+        <h4 id="virtual-info" style="color:#D0011B"></h4>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align:right; padding-right:5%">
         <span class="label label-success virtual-player-status" style="">IDLE</span>
@@ -26,6 +47,7 @@
   <script src="{{ url_for('static', filename='js/jcanvas.min.js') }}"></script>
   <script>
     var board_id = {{board_id}};
+    var tempVirtual;
 
     $(document).ready(function() {
 

@@ -59,7 +59,7 @@ function updateClassroom() {
       else {
         // Check if some of the boards have changed
         for (i in data) {
-
+          console.log(data[i].events);
           // Check if board exists in previous data received
           var last = tempClassroom.filter(function (board) {
             return (board.id === data[i].id);

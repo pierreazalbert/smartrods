@@ -21,13 +21,11 @@ function drawBoard(canvas, id, data) {
     cornerRadius: boardSize / 25,
     fillStyle: "#E2E2E2",
     fromCenter: true,
-    mouseover: function(layer) {
-      console.log('clicked!');
-    }
   });
 
   // Parse input data
   if (data != "-") {
+
       var input =  data.replace(/{/g, "[").replace(/}/g, "]");
       var rods = JSON.parse("[" + input + "]")[0];
 
