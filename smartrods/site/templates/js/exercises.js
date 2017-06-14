@@ -71,17 +71,3 @@ $(document).on('click', '.toggle-button:not(.active)', function () {
     }
 
 });
-
-// function loadActivityHistory() {
-//
-//   // Update activity log using buffered data (after clearing table)
-//   var table = modal.find('tbody');
-//   table.empty();
-//   for (i in data[0].events) {
-//     var event = data[0].events[i];
-//     var newrow = $('<tr>').append($('<td>').text(event.timestamp.slice(5,-4)),
-//                                   $('<td>').text(event.actions),
-//                                   $('<td>').text(event.outcomes));
-//     table.append(newrow);
-//   }
-// }

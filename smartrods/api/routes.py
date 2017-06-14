@@ -1,7 +1,7 @@
 from __future__ import print_function # In python 2.7
 import sys
 
-from flask import Blueprint, abort, make_response, jsonify, request, render_template, g
+from flask import Blueprint, abort, make_response, jsonify, request, render_template, g, url_for
 from flask_login import login_required
 from flask_restful import Api, Resource
 from smartrods import db
@@ -9,7 +9,7 @@ from smartrods.models import *
 from smartrods.api.process import *
 import datetime
 
-mod = Blueprint('api', __name__, static_folder='static', static_url_path='static', template_folder='templates')    # Initialise Blueprint for API
+mod = Blueprint('api', __name__, template_folder='templates', static_folder='static')    # Initialise Blueprint for API
 #auth = HTTPBasicAuth()              # Initialise API HTTP Authentication
 api = Api(mod)                      # Initialise API
 
@@ -300,6 +300,6 @@ api.add_resource(BoardAPI, '/boards/<int:id>', endpoint='board')
 def not_found(error):
     return {'error': 'Not found'}, 404
 
-@mod.route('/docs')
-def docs():
-    return render_template('index.html')
+# @mod.route('/docs')
+# def docs():
+#     return render_template('index.html')

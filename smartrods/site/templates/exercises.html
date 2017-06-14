@@ -54,34 +54,36 @@
   <div class="row" id="historylog" style="display: none;">
     <h1>Activity history</h1>
     <br>
-    <table class="table table-striped table-borderless">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Started</th>
-          <th>Ended</th>
-          <th>Duration</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for activity in current_user.classroom.activities %}
-        {% if activity.type.id > 0 and activity.ended != None %}
-        <tr>
-          <td>{{activity.id}}</td>
-          <td>{{activity.type.name}} to {{activity.type.target}}</td>
-
-          <td>{{activity.started}}</td>
-          <td>{{activity.ended}}</td>
-          <td>{{activity.elapsed}}</td>
-          <td class="text-right"><a class="btn modal-button" style="margin-top:0px!important">Print Reports</a></td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-      </tbody>
-    </table>
-    <br>
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Started</th>
+            <th>Ended</th>
+            <th>Duration</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for activity in current_user.classroom.activities %}
+          {% if activity.type.id > 0 and activity.ended != None %}
+          <tr>
+            <td>{{activity.id}}</td>
+            <td>{{activity.type.name}} to {{activity.type.target}}</td>
+            <td>{{activity.started}}</td>
+            <td>{{activity.ended}}</td>
+            <td>{{activity.elapsed}}</td>
+            <td class="text-right">
+              <a class="btn modal-button" style="margin-top:0px!important" onclick='window.open("{{url_for('site.report', activity_id=activity.id)}}")'>See Report</a>
+            </td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
   </div>
 
 </div>

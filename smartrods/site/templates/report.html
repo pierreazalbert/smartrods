@@ -1,0 +1,134 @@
+{% extends "newbase.html" %}
+{% block title %} {{ super() }} Smartrods - Home {% endblock %}
+{% block head %} {{super()}} {% endblock %}
+
+{% block styles %}
+<link href="{{ url_for('static', filename='css/bootstrap.css', _external=True)}}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/styles.css', _external=True)}}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/morris.css', _external=True)}}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+<body>
+
+  <div class='container'>
+    <div class='row'>
+      <img alt="Brand" src="{{ url_for('static', filename='img/logo-text.png') }}" height=30px style="margin-top:30px;margin-bottom:10px"></img>
+      <h2>Activity report: {{current_user.classroom.name}} - {{activity.type.name}} to {{activity.type.target}}</h2>
+      <h5 style="margin-top:20px;color:grey;font-weight:400;margin-bottom:20px;">Started: {{activity.started}} - Ended: {{activity.ended}} - Duration: {{activity.elapsed}}</h5>
+      <span class="glyphicon glyphicon-print" aria-hidden="true" style="margin-right:10px" onclick="window.print()"></span>
+    </div>
+    <div class='row' style="margin-top:20px;padding-bottom:50px">
+      <h3>Classroom statistics</h3>
+      <br>
+      <table class="table table-striped table-borderless" style="padding-left:20px;margin-bottom:20px;width:790px">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Progression</th>
+            <th>Accuracy</th>
+            <th>Fluency</th>
+            <th>Systematicity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Very High</th>
+            {% for category in overall %}
+              <td>{{category["Very High"]}} %</td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <th>High</th>
+            {% for category in overall %}
+              <td>{{category["High"]}} %</td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <th>Medium</th>
+            {% for category in overall %}
+              <td>{{category["Medium"]}} seconds</td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <th>Low</th>
+            {% for category in overall %}
+              <td>{{category["Low"]}}</td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class='row' style="margin-top:-20px">
+      <h3>Individual results</h3>
+      <br>
+      {% for item in individual %}
+        <div class='row' style="border-bottom:1px dashed #4A4A4A;padding-bottom:50px;padding-left:20px;margin-bottom:20px;width:800px">
+        <h4>{{ item.user }}</h4>
+        <table class="table table-striped table-borderless">
+          <thead>
+            <tr>
+              <th>Progression</th>
+              <th>Accuracy</th>
+              <th>Fluency</th>
+              <th>Systematicity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ item.statistics.progression }} %</td>
+              <td>{{ item.statistics.accuracy }} %</td>
+              <td>{{ item.statistics.fluency }} seconds</td>
+              <td>{{ item.statistics.systematicity }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <h5 style="padding-left:20px">Progression: {{ item.statistics.progression }} %</h5>
+        <h5 style="padding-left:20px">Accuracy: {{ item.statistics.accuracy }} %</h5>
+        <h5 style="padding-left:20px">Fluency: {{ item.statistics.fluency }} seconds</h5>
+        <h5 style="padding-left:20px">Systematicity: {{ item.statistics.systematicity }}</h5> -->
+        <h5 style="padding-left:10px;margin-bottom:20px">Solutions found:
+        {% if item.statistics.solutions_found|length > 0 %}
+          </h5>
+          {% for solution in item.statistics.solutions_found %}
+            <div class='row' style="padding-left:20px;margin-top:10px;text-align:left">
+              {% for rod in solution %}
+                  {% if rod == 10 %}
+                    <img src="{{url_for('static', filename='img/rod-10.svg')}}" alt="Rod 10" style="height:30px;">
+                  {% elif rod == 9 %}
+                    <img src="{{url_for('static', filename='img/rod-9.svg')}}" alt="Rod 9" style="height:30px;">
+                  {% elif rod == 8 %}
+                    <img src="{{url_for('static', filename='img/rod-8.svg')}}" alt="Rod 8" style="height:30px;">
+                  {% elif rod == 7 %}
+                    <img src="{{url_for('static', filename='img/rod-7.svg')}}" alt="Rod 7" style="height:30px;">
+                  {% elif rod == 6 %}
+                    <img src="{{url_for('static', filename='img/rod-6.svg')}}" alt="Rod 6" style="height:30px;">
+                  {% elif rod == 5 %}
+                    <img src="{{url_for('static', filename='img/rod-5.svg')}}" alt="Rod 5" style="height:30px;">
+                  {% elif rod == 4 %}
+                    <img src="{{url_for('static', filename='img/rod-4.svg')}}" alt="Rod 4" style="height:30px;">
+                  {% elif rod == 3 %}
+                    <img src="{{url_for('static', filename='img/rod-3.svg')}}" alt="Rod 3" style="height:30px;">
+                  {% elif rod == 2 %}
+                    <img src="{{url_for('static', filename='img/rod-2.svg')}}" alt="Rod 2" style="height:30px;">
+                  {% elif rod == 1 %}
+                    <img src="{{url_for('static', filename='img/rod-1.svg')}}" alt="Rod 1" style="height:30px;">
+                  {% endif %}
+            {% endfor %}
+          </div>
+          {% endfor %}
+        {% else %}
+          None</h5>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</body>
+
+{% block scripts %} {{ super() }}
+{% endblock %}
+
+{% endblock %}

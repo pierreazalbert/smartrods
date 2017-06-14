@@ -97,16 +97,16 @@ function updateStats() {
         fluency[3].value += 1/classroomSize*100;
       }
       // Update systematicity donut
-      if (newstats.systematicity > 15) {
+      if (newstats.systematicity == 'very high') {
         systematicity[0].value += 1/classroomSize*100;
       }
-      else if (newstats.systematicity > 10) {
+      else if (newstats.systematicity == 'high') {
         systematicity[1].value += 1/classroomSize*100;
       }
-      else if (newstats.systematicity > 5) {
+      else if (newstats.systematicity == "medium") {
         systematicity[2].value += 1/classroomSize*100;
       }
-      else {
+      else if (newstats.systematicity == "none") {
         systematicity[3].value += 1/classroomSize*100;
       }
     }
