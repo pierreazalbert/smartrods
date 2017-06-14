@@ -165,7 +165,13 @@ function resumeActivity(activity_id) {
 }
 
 function endActivity(activity_id) {
-  $.ajax({
+  console.log('stopped activity');
+  A().then(B).then(C).then(D);
+}
+
+function A () {
+  console.log("Ending current activity");
+  return $.ajax({
            type: "PUT",
            url: "/api/classrooms/{{current_user.classroom_id}}/activities",
            data: '{"action":"stop", "activity_id":' + activity_id + ', "elapsed":"' + String($('.classroom-player-time')[0].textContent) + '"}',
@@ -173,15 +179,18 @@ function endActivity(activity_id) {
            dataType: "json",
            //username: 'smartrods',
            //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
-           success: function (result) {
-             console.log(result);
-           },
-           error: function (error) {
-             console.log(error);
-           }
+          //  success: function (result) {
+          //    console.log(result);
+          //  },
+          //  error: function (error) {
+          //    console.log(error);
+          //  }
   });
+}
 
-  $.ajax({
+function B (resultFromA) {
+  console.log("Creating new empty activity. Result From A = " + resultFromA);
+  return $.ajax({
            type: "POST",
            url: "/api/classrooms/{{current_user.classroom_id}}/activities",
            data: '{"action":"start", "activity_type":0}',
@@ -189,15 +198,17 @@ function endActivity(activity_id) {
            dataType: "json",
            //username: 'smartrods',
            //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
-           success: function (result) {
-             console.log(result);
-           },
-           error: function (error) {
-             console.log(error);
-           }
+          //  success: function (result) {
+          //    console.log(result);
+          //  },
+          //  error: function (error) {
+          //    console.log(error);
+          //  }
   });
+}
 
-  console.log('stopped activity');
+function C (resultFromB) {
+  console.log("Updating player. Result From B = " + resultFromB);
 
   $('.classroom-player-stop').each( function () {
     $(this).addClass('hidden');
@@ -213,5 +224,34 @@ function endActivity(activity_id) {
     $(this).removeClass('classroom-player-pause').addClass('classroom-player-start');
   });
   clearInterval(clockTimer);
-  updatePlayer();
+
+  return $.ajax({
+           type: "GET",
+           url: "/api/classrooms/{{current_user.classroom_id}}/activities",
+           data: '',
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           //username: 'smartrods',
+           //password: 'fae2ba5c-7a51-407b-9c0a-1366ce610ff1',
+          //  success: function (result) { console.log(result); },
+          //  error: function (error) { console.log(error); }
+  });
+
+}
+
+function D (resultFromC) {
+  console.log("Updating UI. Result From C = " + resultFromC);
+
+  var data = resultFromC;
+
+  $('.classroom-player-activity').each( function () {
+      $(this)[0].textContent = data['activity_name'];
+      activity_id = data['activity_id'];
+      activity_type = data['activity_type'];
+      activity_started = data['started'];
+      activity_elapsed = data['elapsed'];
+      solution_max_size = data['solution_max_size'];
+  });
+  resumeActivity(activity_id);
+
 }
