@@ -36,7 +36,7 @@
    <ul class="nav navbar-nav navbar-right">
 		 {% if current_user.is_authenticated %}
     <li class="dropdown">
-     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.username|title}} <span class="caret"></span></a>
+     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.firstname|title}} <span class="caret"></span></a>
      <ul class="dropdown-menu">
       <li><a id="user-profile" href="{{ url_for('user.profile', username=current_user.username) }}">Profile</a></li>
       <li role="separator" class="divider"></li>
@@ -86,9 +86,14 @@
     <a href="{{url_for('site.classroom')}}" class="btn btn-default" style="margin-right:20px;display:inline">Go To Classroom</a><br><br>
     <h3 style="color:white; display:inline; margin-right:20px; vertical-align:middle">Board ID: {{current_user.board.id}}</h3>
     <a onclick='window.open("{{url_for('site.virtual', board_id=current_user.board.id)}}")' class="btn btn-default" style="display:inline">Virtual Board</a><br><br>
-    {% if current_user.classroom.activities[-1].type.id > 0 %}
-    <h3 style="color:white; display:inline; margin-right:20px; vertical-align:middle">Currently running: {{current_user.classroom.activities[-1].type.name}} to {{current_user.classroom.activities[-1].type.target}}</h3>
-    <a href="{{url_for('site.classroom')}}" class="btn btn-default" style="display:inline">See Activity</a>
+    {% if current_user.classroom.activities|length > 0 %}
+      {% if current_user.classroom.activities[-1].type.id > 0 %}
+      <h3 style="color:white; display:inline; margin-right:20px; vertical-align:middle">Currently running: {{current_user.classroom.activities[-1].type.name}} to {{current_user.classroom.activities[-1].type.target}}</h3>
+      <a href="{{url_for('site.classroom')}}" class="btn btn-default" style="display:inline">See Activity</a>
+      {% else %}
+      <h3 style="color:white; display:inline; margin-right:20px; vertical-align:middle">No activity running</h3>
+      <a href="{{url_for('site.exercises')}}" class="btn btn-default" style="display:inline">Start Activity</a>
+      {% endif %}
     {% else %}
     <h3 style="color:white; display:inline; margin-right:20px; vertical-align:middle">No activity running</h3>
     <a href="{{url_for('site.exercises')}}" class="btn btn-default" style="display:inline">Start Activity</a>

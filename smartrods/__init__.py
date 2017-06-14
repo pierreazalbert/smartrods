@@ -13,10 +13,18 @@ db = SQLAlchemy(application)        # Initialise Database
 mail = Mail(application)            # Initialise Flask-Mail
 bootstrap = Bootstrap(application)
 
-# Initialise Flask-User
+# Initialise Flask-User DB Adapater
 from models import User
 db_adapter = SQLAlchemyAdapter(db, User)        # Register the User model
-user_manager = UserManager(db_adapter, application)     # Initialize Flask-User
+# Modify Register Form
+from flask_user.forms import RegisterForm
+from wtforms import StringField, validators
+class RegisterForm(RegisterForm):
+    firstname = StringField('First name', validators=[validators.DataRequired('First name is required')])
+    lastname = StringField('Last name', validators=[validators.DataRequired('Last name is required')])
+    classroom_id = StringField('Classroom ID', validators=[validators.DataRequired('Classroom ID is required')])
+# Initialise Flask-User Manager
+user_manager = UserManager(db_adapter, application, register_form = RegisterForm)     # Initialize Flask-User
 
 # Import and register blueprints with application
 from smartrods.api.routes import mod
