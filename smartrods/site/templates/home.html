@@ -101,9 +101,20 @@
     {% else %}
     <h1 style="color:white;font-size:500%">Welcome to Smart Rods</h1>
     <br>
-    <h3 style="color:white">Please login to view your classroom or start an activity</h3>
-    <br>
-    <a href="{{url_for('user.login')}}" class="btn btn-default">Log In</a>
+    <div class='row'>
+
+      <div class='col-sm-6 col-md-6 col-lg-6'>
+        <h3 style="color:white">Please login to view your classroom or start an activity</h3>
+        <br>
+        <a href="{{url_for('user.login')}}" class="btn btn-default">Log In</a>
+        <br>
+        <br>
+        <br>
+      </div>
+      <div class='col-sm-6 col-md-6 col-lg-6'>
+        <div class="video-container"><iframe width="1280" height="720" src="https://www.youtube-nocookie.com/embed/hoFAXz0YjBU?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe></div>
+      </div>
+    </div>
     {% endif %}
   </div>
 
