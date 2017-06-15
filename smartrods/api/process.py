@@ -116,7 +116,7 @@ def checkNumberBonds(rods, target, solution_max_size, solutions_found):
             else:
                 result += value
                 solution.append(value)
-            if (result == target and len(solution) >= 2 and value != target and solution not in solutions_found):
+            if (result == target and len(solution) >= 2 and len(solution) <= solution_max_size and value != target and solution not in solutions_found):
                 success_count += 1
                 solutions_found.append(solution)
                 text += str(solution).strip('[]').replace(', ', '+') + ' (row ' + str(idx) + '), '
