@@ -1,115 +1,111 @@
-{% extends "bootstrap/base.html" %}
+{% extends "bootstrap/base.html" %} {% block styles %}
+<link rel="apple-touch-icon" sizes="57x57" href="{{url_for('static', filename='img/apple-icon-57x57.png')}}">
+<link rel="apple-touch-icon" sizes="60x60" href="{{url_for('static', filename='img/apple-icon-60x60.png')}}">
+<link rel="apple-touch-icon" sizes="72x72" href="{{url_for('static', filename='img/apple-icon-72x72.png')}}">
+<link rel="apple-touch-icon" sizes="76x76" href="{{url_for('static', filename='img/apple-icon-76x76.png')}}">
+<link rel="apple-touch-icon" sizes="114x114" href="{{url_for('static', filename='img/apple-icon-114x114.png')}}">
+<link rel="apple-touch-icon" sizes="120x120" href="{{url_for('static', filename='img/apple-icon-120x120.png')}}">
+<link rel="apple-touch-icon" sizes="144x144" href="{{url_for('static', filename='img/apple-icon-144x144.png')}}">
+<link rel="apple-touch-icon" sizes="152x152" href="{{url_for('static', filename='img/apple-icon-152x152.png')}}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static', filename='img/apple-icon-180x180.png')}}">
+<link rel="icon" type="image/png" sizes="192x192" href="{{url_for('static', filename='img/android-icon-192x192.png')}}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static', filename='img/favicon-32x32.png')}}">
+<link rel="icon" type="image/png" sizes="96x96" href="{{url_for('static', filename='img/favicon-96x96.png')}}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='img/favicon-16x16.png')}}">
 
-{% block styles %}
 <link href="{{ url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/morris.css')}}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet">
-{% endblock %}
-
-{% block title %}SmartRods - {% endblock %}
-
-{% block navbar %}
+<link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet"> {% endblock %} {% block title %}SmartRods - {% endblock %} {% block navbar %}
 <nav class="navbar navbar-default">
- <div class="container-fluid">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-   <button id='menu-button' type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button id='menu-button' type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
       <div id='brand-logo'>
-          <a class="navbar-brand"  href="{{ url_for('site.home') }}">
+        <a class="navbar-brand" href="{{ url_for('site.home') }}">
 		      <img alt="Brand"  src="{{ url_for('static', filename='img/logo-text.png') }}" height=80%></img>
 		      </a>
-        </div>
-  </div>
+      </div>
+    </div>
 
-  <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse" id="navbar">
-   <ul class="nav navbar-nav">
-    <li ><a id="site-classroom" href="{{ url_for('site.classroom') }}">Classroom</a></li>
-    <li ><a id="site-exercises" href="{{ url_for('site.exercises') }}">Exercises</a></li>
-   </ul>
-   <ul class="nav navbar-nav navbar-right">
-		 {% if current_user.is_authenticated %}
-    <li class="dropdown">
-     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.firstname|title}} <span class="caret"></span></a>
-     <ul class="dropdown-menu">
-      <li><a id="user-profile" href="{{ url_for('user.profile', username=current_user.username) }}">Profile</a></li>
-      <li role="separator" class="divider"></li>
-      <li><a id="user-logout" href="{{ url_for('user.logout') }}">Log Out</a></li>
-    </ul>
-   </li>
-			{% else %}
-			<li><a id="user-login" href="{{ url_for('user.login') }}">Log In</a></li>
-			{% endif %}
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbar">
+      <ul class="nav navbar-nav">
+        <li><a id="site-classroom" href="{{ url_for('site.classroom') }}">Classroom</a></li>
+        <li><a id="site-exercises" href="{{ url_for('site.exercises') }}">Exercises</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.firstname|title}} <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a id="user-profile" href="{{ url_for('user.profile', username=current_user.username) }}">Profile</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a id="user-logout" href="{{ url_for('user.logout') }}">Log Out</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li><a id="user-login" href="{{ url_for('user.login') }}">Log In</a></li>
+        {% endif %}
 
-    <li><a id="site-settings" href="" class="glyphicon glyphicon-cog" style="margin-top:-1px"></a></li>
-   </ul>
+        <li><a id="site-settings" href="" class="glyphicon glyphicon-cog" style="margin-top:-1px"></a></li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
   </div>
-  <!-- /.navbar-collapse -->
- </div>
- <!-- /.container-fluid -->
+  <!-- /.container-fluid -->
 </nav>
-{% endblock %}
+{% endblock %} {% block content %}
 
-{% block content %}
-
-  <div class="container">
-  {% block flash_messages %}
-      {%- with messages = get_flashed_messages(with_categories=true) -%}
-          {% if messages %}
-              {% for category, message in messages %}
-                  {% if category=='error' %}
-                      {% set category='danger' %}
-                  {% endif %}
-                  <div class="alert alert-{{category}}">
-                    <span><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></span>
-                    {{ message|safe }}
-                  </div>
-
-              {% endfor %}
-          {% endif %}
-      {%- endwith %}
-  {% endblock %}
+<div class="container">
+  {% block flash_messages %} {%- with messages = get_flashed_messages(with_categories=true) -%} {% if messages %} {% for category, message in messages %} {% if category=='error' %} {% set category='danger' %} {% endif %}
+  <div class="alert alert-{{category}}">
+    <span><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></span> {{ message|safe }}
   </div>
 
-  {% block main %}
-  {% endblock %}
+  {% endfor %} {% endif %} {%- endwith %} {% endblock %}
+</div>
 
-{% endblock %}
+{% block main %} {% endblock %} {% endblock %} {% block scripts %}
+<script src="https://use.typekit.net/rmp5vih.js"></script>
+<script>
+  try {
+    Typekit.load({
+      async: true
+    });
+  } catch (e) {}
+</script>
+<script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-migrate-3.0.0.min.js') }}"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.0.0.js"></script> -->
+<!-- <script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script> -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/touche.min.js') }}"></script>
+<script>
+  $(document).ready(function() {
 
-{% block scripts %}
-  <script src="https://use.typekit.net/rmp5vih.js"></script>
-  <script>try{Typekit.load({ async: true });}catch(e){}</script>
-	<script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/jquery-migrate-3.0.0.min.js') }}"></script>
-  <!-- <script src="https://code.jquery.com/jquery-3.0.0.js"></script> -->
-  <!-- <script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script> -->
-	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/touche.min.js') }}"></script>
-  <script>
-    $(document).ready(function () {
+    // Highlight active nav
+    var active = String("#{{request.endpoint}}").replace('.', '-');
+    $(active).parent().addClass('active');
 
-      // Highlight active nav
-      var active = String("#{{request.endpoint}}").replace('.', '-');
-      $(active).parent().addClass('active');
+    // Auto dismiss success alerts
+    $(".alert-success").fadeTo(2000, 500).slideUp(500, function() {
+      $(".alert-success").slideUp(500);
+    });
 
-      // Auto dismiss success alerts
-      $(".alert-success").fadeTo(2000, 500).slideUp(500, function(){
-        $(".alert-success").slideUp(500);
-      });
+    // Auto dismiss info alerts
+    $(".alert-info").fadeTo(2000, 500).slideUp(500, function() {
+      $(".alert-info").slideUp(500);
+    });
 
-      // Auto dismiss info alerts
-      $(".alert-info").fadeTo(2000, 500).slideUp(500, function(){
-        $(".alert-info").slideUp(500);
-      });
-
-      // Never show 'Please login' message
-      $(".alert-message").hide();
+    // Never show 'Please login' message
+    $(".alert-message").hide();
 
   });
-  </script>
+</script>
 {% endblock %}
