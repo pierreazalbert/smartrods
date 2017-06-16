@@ -227,7 +227,8 @@ class BoardAPI(Resource):
         events = board.user.activities[-1].events
         data = []
         for event in events:
-            data.append({'timestamp':str(event.timestamp),
+            if event.user_id == board.user.id:
+                data.append({'timestamp':str(event.timestamp),
                              'rods':event.rods})
         return {'id':board.id,
                 'is_connected':board.is_connected,
