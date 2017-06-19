@@ -1,6 +1,6 @@
-![## Smart Rods](./smartrods/static/img/login-logo.png) 
+![## Smart Rods](./smartrods/static/img/readme-logo.png) 
 
-
+## Welcome to the Smart Rods code repository
 
 This is the online repository for the SmartRods project. 
 
