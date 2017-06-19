@@ -1,4 +1,6 @@
-![## Smart Rods](./smartrods/static/img/logo-text.png) 
+![## Smart Rods](./smartrods/static/img/login-logo.png) 
+
+
 
 This is the online repository for the SmartRods project. 
 
@@ -32,9 +34,7 @@ flask/bin/python manage.py db init
 
 # run the application on local host (usually 127.0.0.1:5000)
 flask/bin/python application.py
-
 ```
-
 
 ## Deploying the application to the cloud
 
