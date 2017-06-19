@@ -6,13 +6,13 @@ This is the online repository for the SmartRods project.
 
 The demonstration version of the application is available [here](http://app.smartrods.co.uk). 
 
-The API documentation is available [here](http://pierreazalbert.github.io/smartrods)
+The API documentation is available [here](http://pierreazalbert.github.io/smartrods).
 
 ## Application description
 
 The Smart Rods application is based on the [Flask](http://flask.pocoo.org) framework, written in Python. 
 
-There are two distinct modules in the application which have been implemented as [Blueprints](http://flask.pocoo.org/docs/0.12/blueprints/) for better isolation and organisation of code. The Site module serves all the files necessary to display the application in a client browser, and the API module acts as an interface between the PostgreSQL database and the application front end. The 
+There are two distinct modules in the application which have been implemented as [Blueprints](http://flask.pocoo.org/docs/0.12/blueprints/) for better isolation and organisation of code. The Site module serves all the files necessary to display the application in a client browser, and the API module acts as an interface between the PostgreSQL database and the application front end.
 
 
 ## Running the application locally
