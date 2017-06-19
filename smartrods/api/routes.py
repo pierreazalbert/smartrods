@@ -275,9 +275,9 @@ class BoardAPI(Resource):
 
         [actions, outcomes, stats] = processData(new_data, last_data, activity, last_stats)
 
-        print (actions, file=sys.stderr)
-        print (outcomes, file=sys.stderr)
-        print (stats, file=sys.stderr)
+        # print (actions, file=sys.stderr)
+        # print (outcomes, file=sys.stderr)
+        # print (stats, file=sys.stderr)
 
         # Create new event object and add it to activity
         newevent = Event(timestamp = request.json['timestamp'],
@@ -358,9 +358,9 @@ class VirtualBoardAPI(Resource):
 
         [actions, outcomes, stats] = processData(new_data, last_data, activity, last_stats)
 
-        print (actions, file=sys.stderr)
-        print (outcomes, file=sys.stderr)
-        print (stats, file=sys.stderr)
+        # print (actions, file=sys.stderr)
+        # print (outcomes, file=sys.stderr)
+        # print (stats, file=sys.stderr)
 
         # Create new event object and add it to activity
         newevent = Event(timestamp = request.json['timestamp'],
