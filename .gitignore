@@ -3,6 +3,7 @@ flask
 *.pyc
 .DS_Store
 config.py
+smartrods/*.pyc
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
