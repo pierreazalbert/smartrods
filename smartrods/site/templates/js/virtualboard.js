@@ -1,7 +1,7 @@
 function initVirtual(board_id) {
   $.ajax({
     type: "GET",
-    url: "/api/boards/" + String(board_id),
+    url: "/api/virtualboards/" + String(board_id),
     data: '',
     contentType: "application/json; charset=utf-8",
     dataType: "json",
@@ -261,7 +261,7 @@ function updateVirtualBoard(array) {
   var timestamp = String(now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds() + '.' + now.getMilliseconds());
   $.ajax({
            type: "POST",
-           url: "/api/boards/"+board_id,
+           url: "/api/virtualboards/"+board_id,
            data: JSON.stringify({"rods":array, "timestamp":timestamp}),
            contentType: "application/json; charset=utf-8",
            dataType: "json",
