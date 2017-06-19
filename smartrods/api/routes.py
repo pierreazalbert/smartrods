@@ -25,6 +25,8 @@ api = Api(mod)                      # Initialise API
 
 class ActivityTypeAPI(Resource):
 
+    decorators = [login_required]
+
     # returns id of an activity type based on name, target number and max solution size
     def get(self):
         # Check correct format of request
@@ -53,7 +55,7 @@ api.add_resource(ActivityTypeAPI, '/activity_types', endpoint='activity_type')
 
 class ActivityAPI(Resource):
 
-    #decorators = [login_required]
+    decorators = [login_required]
 
     def get(self, id):
         # Check classroom exists
@@ -216,7 +218,7 @@ api.add_resource(ClassroomAPI, '/classrooms/<int:id>', endpoint='classroom')
 
 class BoardAPI(Resource):
 
-    #decorators = [login_required]
+    decorators = [login_required]
 
     # Get information about a specific board
     # Returns only events in current activity

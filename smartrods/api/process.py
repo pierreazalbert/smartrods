@@ -167,11 +167,11 @@ def processData(new_data, old_data, activity, old_stats):
             stats["success_count"] += success_count
             success_max_count = calculateSolutionNumber(activity.type.target, activity.type.solution_max_size)
 
-        # calculate statistics based on results obtained
-        stats["progression"] = int(stats["success_count"] / success_max_count * 100)
-        stats["accuracy"] = int(stats["success_count"] / stats["actions_count"] *100)
-        #stats["fluency"] = ...
-        outcomes = text
+            # calculate statistics based on results obtained
+            stats["progression"] = int(stats["success_count"] / success_max_count * 100)
+            stats["accuracy"] = int(stats["success_count"] / stats["actions_count"] *100)
+            #stats["fluency"] = ...
+            outcomes = text
     else:
         outcomes = "-"
 
