@@ -36,8 +36,8 @@
         $(this).removeClass('label-success').addClass('label-default');
       });
       // Update boards and stats data
-      enlargeTimer = setInterval(updateEnlarge(board_id), 3000);
-      updateEnlarge(board_id);
+      enlargeTimer = setInterval(updateEnlarge, 3000);
+      updateEnlarge();
 
       $(window).resize(respondEnlargeCanvas);
 

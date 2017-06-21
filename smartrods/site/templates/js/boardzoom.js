@@ -1,7 +1,7 @@
-function updateEnlarge(board_id) {
+function updateEnlarge() {
   $.ajax({
     type: "GET",
-    url: "/api/boards/"+String(board_id),
+    url: "/api/virtualboards/"+String(board_id),
     data: '',
     contentType: "application/json; charset=utf-8",
     dataType: "json",
@@ -26,22 +26,18 @@ function updateEnlarge(board_id) {
     }
   }).done(function(data) {
 
-    // Update player status
     // The first time we poll we create everything
     if (tempEnlarge === null) {
-      createEnlargeBoard(data);
+        createEnlargeBoard(data);
     }
     // Otherwise, check if something has changed
     else {
-      last = tempEnlarge;
-
-      if (last === null) {
-        createBoard(data);
-      } else if (data.rods != last.rods) {
-        updateBoard(data);
-      } else {
-        console.log('no need to update board');
-      }
+        if (data.events.slice(-1)[0].rods != tempEnlarge.events.slice(-1)[0].rods) {
+          updateBoard(data);
+        }
+        else {
+          console.log('no boards to update');
+        }
     }
 
     tempEnlarge = data;
@@ -54,7 +50,6 @@ function createEnlargeBoard(data) {
   console.log('creating enlarged canvas for board ' + data.id);
   // Create new div
   var canvas = $('canvas');
-  console.log(canvas);
   // Give div the id of the board and insert user name
   canvas.attr('id', String('board_' + data.id));
   $('#enlarge-username').text(data.user);
